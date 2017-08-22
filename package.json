@@ -1,0 +1,17 @@
+{
+  "name": "fee-open",
+  "version": "0.0.1",
+  "description": "H5打开原生APP",
+  "main": "index.js",
+  "scripts": {
+    "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest --config=./config/jest.config.js --runInBand -i --env jest-environment-node-debug",
+    "test": "node ./node_modules/jest/bin/jest --config=./config/jest.config.js"
+  },
+  "author": "gzliruixi",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.1.1",
+    "jest": "^20.0.4",
+    "jest-environment-node-debug": "^2.0.0"
+  }
+}
