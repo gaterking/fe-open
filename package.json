@@ -4,7 +4,7 @@
   "description": "H5打开原生APP",
   "main": "index.js",
   "scripts": {
-    "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest --config=./config/jest.config.js --runInBand -i --env jest-environment-node-debug",
+    "test:debug":"node --inspect-brk ./node_modules/jest/bin/jest --config=./config/jest.config.js --runInBand",
     "test": "node ./node_modules/jest/bin/jest --config=./config/jest.config.js"
   },
   "author": "gzliruixi",

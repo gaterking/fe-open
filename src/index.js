@@ -20,13 +20,25 @@ function feeOpen(config, ua) {
 
     function openByIframe() {
         if (document) {
+            var openStartTime = Date.now();
             var ifa = document.creatElement('iframe');
             ifa.src = url; //APP的schema协议
             ifa.style.display = 'none';
             setTimeout(function() {
                 document.body.removeChild(ifa);
-                if (this.config.downloadUrl && this.config.downloadUrl !== '') {
-                    window.location.href = this.config.downloadUrl; //APP下载页
+                if (Date.now() - openStartTime <= 2500) {
+                    //唤醒失败。如果唤醒成功，页面会转到后台，web的计时器会停止，返回后，时间会超过2500ms
+                    if (this.config.callback.onFail && typeof this.config.callback.onFail === 'function') {
+                        this.config.callback.onFail();
+                    }
+                    if (this.config.downloadUrl && this.config.downloadUrl !== '') {
+                        window.location.href = this.config.downloadUrl; //APP下载页
+                    }
+                }else{
+                    //唤醒成功
+                    if (this.config.callback.onSuccess && typeof this.config.callback.onSuccess === 'function') {
+                        this.config.callback.onSuccess();
+                    }
                 }
             }, 2000);
         }
@@ -51,7 +63,7 @@ function feeOpen(config, ua) {
     this.open = function(urls) {
         if (this.config.isApp) //已经在APP里面，无需打开
             return false;
-        if (this.config.callback.onStart) {
+        if (this.config.callback.onStart && typeof this.config.callback.onStart === 'function') {
             this.config.callback.onStart();
         }
         if (currentEnv.isIOS && currentEnv.osMVer >= 9) {
@@ -61,7 +73,7 @@ function feeOpen(config, ua) {
         } else {
 
         }
-        if (this.config.callback.onEnd) {
+        if (this.config.callback.onEnd && typeof this.config.callback.onEnd === 'function') {
             this.config.callback.onEnd();
         }
     };
@@ -78,6 +90,7 @@ function feeOpen(config, ua) {
         if (this.config.auto) {
             this.open();
         }
+        this.config.isApp = config.isApp?config.isApp:false;
 
     }
     _init.call(this);
