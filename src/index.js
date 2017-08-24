@@ -8,6 +8,7 @@ function feeOpen(config, ua) {
         auto: false, //是否自动打开
         schema: '',
         universalUrl: '',
+        intent: '',
         downloadUrl: '',
         callback: {
             onStart: function() {},
@@ -31,10 +32,14 @@ function feeOpen(config, ua) {
                     if (this.config.callback.onFail && typeof this.config.callback.onFail === 'function') {
                         this.config.callback.onFail();
                     }
+                    //唤醒失败，如果是chrome，触发intent
+                    if (currentEnv.isChrome) {
+                        //http://echizen.github.io/tech/2015/02-23-map-api-for-web-page
+                    }
                     if (this.config.downloadUrl && this.config.downloadUrl !== '') {
                         window.location.href = this.config.downloadUrl; //APP下载页
                     }
-                }else{
+                } else {
                     //唤醒成功
                     if (this.config.callback.onSuccess && typeof this.config.callback.onSuccess === 'function') {
                         this.config.callback.onSuccess();
@@ -54,7 +59,7 @@ function feeOpen(config, ua) {
         */
     }
 
-    function openByUniversalUrl(url) {
+    function openByLocation(url) {
         if (windoww) {
             indow.location.href = url;
         }
@@ -67,10 +72,17 @@ function feeOpen(config, ua) {
             this.config.callback.onStart();
         }
         if (currentEnv.isIOS && currentEnv.osMVer >= 9) {
-            openByUniversalUrl(urls && urls.universalUrl ? urls.universalUrl : this.config.universalUrl);
-        } else if (currentEnv.isIOS && currentEnv.osMVer < 9 || currentEnv.isAndroid) {
-            openByUniversalUrl(urls && urls.schema ? urls.schema : this.config.config.schema);
-        } else {
+            openByLocation(urls && urls.universalUrl ? urls.universalUrl : this.config.universalUrl);
+        } else if (currentEnv.isIOS && currentEnv.osMVer < 9 || (currentEnv.isAndroid && currentEnv.isChrome)) {
+            openByIframe(urls && urls.schema ? urls.schema : this.config.config.schema);
+        }
+
+        /*else if (currentEnv.isAndroid && currentEnv.isChrome) {
+            //Android + Chrome = intent
+            //在Android Chrome浏览器中，版本号在chrome 25+的版本不在支持通过传统schema的方法唤醒App，比如通过设置window.location = "xxxx://login"将无法唤醒本地客户端。需要通过Android Intent 来唤醒APP
+            //openByLocation(urls && urls.intent ? urls.intent : this.config.config.intent);
+        }*/
+        else {
 
         }
         if (this.config.callback.onEnd && typeof this.config.callback.onEnd === 'function') {
@@ -90,7 +102,7 @@ function feeOpen(config, ua) {
         if (this.config.auto) {
             this.open();
         }
-        this.config.isApp = config.isApp?config.isApp:false;
+        this.config.isApp = config.isApp ? config.isApp : false;
 
     }
     _init.call(this);
