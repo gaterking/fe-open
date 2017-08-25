@@ -7,9 +7,9 @@ function feeOpen(config, ua) {
         isApp: false,
         auto: false, //是否自动打开
         schema: '',
-        universalUrl: '',
-        intent: '',
-        downloadUrl: '',
+        universalUrl: '',//ios 9 universal url
+        intent: '',//android intent地址
+        downloadUrl: '',//下载地址
         callback: {
             onStart: function() {},
             onEnd: function() {},
@@ -60,7 +60,7 @@ function feeOpen(config, ua) {
     }
 
     function openByLocation(url) {
-        if (windoww) {
+        if (window) {
             indow.location.href = url;
         }
     }
@@ -73,17 +73,12 @@ function feeOpen(config, ua) {
         }
         if (currentEnv.isIOS && currentEnv.osMVer >= 9) {
             openByLocation(urls && urls.universalUrl ? urls.universalUrl : this.config.universalUrl);
-        } else if (currentEnv.isIOS && currentEnv.osMVer < 9 || (currentEnv.isAndroid && currentEnv.isChrome)) {
-            openByIframe(urls && urls.schema ? urls.schema : this.config.config.schema);
-        }
-
-        /*else if (currentEnv.isAndroid && currentEnv.isChrome) {
+        } else if (currentEnv.isAndroid && currentEnv.isChrome) {
             //Android + Chrome = intent
             //在Android Chrome浏览器中，版本号在chrome 25+的版本不在支持通过传统schema的方法唤醒App，比如通过设置window.location = "xxxx://login"将无法唤醒本地客户端。需要通过Android Intent 来唤醒APP
-            //openByLocation(urls && urls.intent ? urls.intent : this.config.config.intent);
-        }*/
-        else {
-
+            openByLocation(urls && urls.intent ? urls.intent : this.config.intent);
+        } else {
+            openByIframe(urls && urls.schema ? urls.schema : this.config.schema);
         }
         if (this.config.callback.onEnd && typeof this.config.callback.onEnd === 'function') {
             this.config.callback.onEnd();

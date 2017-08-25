@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    <style type="text/css">
+        html, body {
+            background: #e8e2d3;
+            padding: 0;
+            margin: 0;
+            font-family: sans-serif;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        .arrow {
+            background-image: url(arrow.png);
+            width: 25%;
+            padding-bottom: 26.85%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            float: right;
+            margin-top: 4px;
+            margin-right: 4px;
+        }
+
+        .bike {
+            background-image: url(bike.png);
+            width: 37.5%;
+            padding-bottom: 24.09%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            margin: 0 auto;
+        }
+
+        .hint {
+            color: #222;
+            padding: 20px;
+            font-size: 20px;
+        }
+
+        .hint a, .hint a:visited, .hint .a {
+            text-decoration: underline;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .play, .local, .appstore {
+            width: 40%;
+            padding-bottom: 11.85%;
+            margin: 0 auto 20px;
+            display: block;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .play {
+            background-image: url(en-play-badge.png);
+        }
+
+        .local {
+            background-image: url(apk.png);
+        }
+
+        .appstore {
+            background-image: url(appstore.png);
+        }
+
+        #wechat, #android, #ios, #android-already-in-app, #ios-already-in-app {
+            display: none;
+        }
+    </style>
+    <script language="JavaScript" type="text/javascript" src="/common/common.js?0302"></script>
+    <title>Download</title>
+    <!--[if lt IE 9]>
+    <script language="JavaScript" type="text/javascript"
+            src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-shim.min.js"></script><![endif]-->
+    <script language="JavaScript" type="text/javascript">
+        (function () {
+            var queryParams = (function (href) {
+                if (!href) {
+                    return {};
+                }
+                var fIdx = href.indexOf('?');
+                if (fIdx < 0) {
+                    return {};
+                }
+                var lIdx = href.indexOf('#');
+                if (lIdx < 0) {
+                    lIdx = href.length;
+                }
+                var wls = href.substring(fIdx, lIdx);
+                if (wls.charAt(0) === '?') {
+                    wls = wls.substr(1);
+                }
+                var output = {};
+                wls.split('&').filter(function (substr) {
+                    return substr.length > 0;
+                }).forEach(function (substr) {
+                    var keyValue = substr.split('=');
+                    var key = decodeURIComponent(keyValue.shift());
+                    output[key] = decodeURIComponent(keyValue.join('='));
+                });
+                return output;
+            });
+            var queryParamsCur = queryParams(window.location.href);
+            var queryParamsRef = queryParams(document.referrer);
+            var channelMappings = [[["baidu", "pz"], "bdpz"], [["baidu", "sem"], "bdsem"], [["qihoo", "pz"], "qhpz"], [["qihoo", "sem"], "qhsem"], [["sogou", "pz"], "sgpz"], [["sogou", "sem"], "sgsem"], [["baidu", "wappz"], "bdwappz"], [["shenma", "wappz"], "smwappz"], [["sogou", "wappz"], "sgwappz"], [["baidu", "wapsem"], "bdwapsem"], [["shenma", "wapsem"], "smwapsem"], [["sogou", "wapsem"], "sgwapsem"], [["youku", "brand"], "ykbrand"], [["iqiyi", "brand"], "qybrand"]]; // 王苗常态化
+
+            channelMappings = channelMappings.concat([[["bikeplate", /^\d+$/], "bikeplateNew"], [["bikeplate", "old"], "bikeplateOld"]]); // 车牌扫码
+            channelMappings = channelMappings.concat([[["duanxin", "1"], "qqsocial11"]]); // 某次短信
+            channelMappings = channelMappings.concat([[["moji", "banner"], "mojibanner"], [["gewala", "banner"], "gewalabanner"], [["maoyan", "banner"], "maoyanbanner"], [["dianping", "banner"], "dianpingbanner"], [["toutiao", "kaiping"], "toutiaokp"], [["wechat", "pyq"], "wechatpyq"]]); // 201702 张瀚穹
+            channelMappings = channelMappings.concat([[["moji", "icon"], "mojiicon"], [["moji", "helper"], "mojihelper"], [["kugou", "kaiping"], "kugoukp"], [["getui", "tuisong"], "getui"], [["momo", "kaiping"], "momokp"], [["renmin", "ribao"], "renminribao"]], [["kol", "appjun"], "kolappjun"], [["kol", "asam"], "kolasam"], [["kol", "zhoumo"], "kolzhoumo"], [["kol", "zuijian"], "kolzuijian"], [["kol", "dawanglu"], "koldawanglu"]); // 201703 张瀚穹
+            channelMappings = channelMappings.concat([[["moji", "kaiping"], "mojikp"], [["huangli", "kaiping"], "huanglikp"], [["meiyou", "kaiping"], "meiyoukp"], [["baidu", "kaiping"], "baidukp"], [["youku", "kaiping"], "youkukp"], [["mangguo", "kaiping"], "mangguokp"], [["baofeng", "kaiping"], "baofengkp"], [["yinyuetai", "kaiping"], "yinyuetaikp"], [["lizhi", "kaiping"], "lizhikp"], [["huawei", "suoping"], "huaweikp"], [["vivo", "suoping"], "vivokp"], [["tencent", "kaiping"], "tencentkp"], [["moji", "icon"], "mojiicon"], [["moji", "banner"], "mojibanner"], [["toutiao", "kaiping"], "toutiaokp"], [["gt", "tuisong"], "getui"], [["yuedong", "tuisong"], "momokp"]]);
+            // 20170309 张瀚穹
+            channelMappings = channelMappings.concat([[["moji", "kaiping"], "mojikp"], [["tencent", "kaiping"], "tencentkp"], [["toutiao", "kaiping"], "toutiaokp"], [["gt", "tuisong"], "getui"], [["gaodeditu", "kaiping"], "gaodeditu"], [["tencentshipin", "kaiping"], "tencentshipin"], [["qqyinyue", "kaiping"], "qqyinyue"], [["momo", "kaiping"], "momo"], [["mojiyoushangjiao", "youshangjiao"], "mojiyoushangjiao"]]);
+            // 20170315 叶艳丽
+            channelMappings = channelMappings.concat([[["kol", "xingzuobuqiuren"], "xingzuobuqiuren"], [["kol", "whatyouneed"], "whatyouneed"]]);
+            // 20170322 叶艳丽
+            channelMappings = channelMappings.concat([[["moji", "kaiping"], "mojikp"], [["tencentxxldt", "xxldt"], "tencentxxldt"], [["tencent", "kaiping"], "tencentkp"], [["meitukp", "kaiping"], "meitukp"], [["aiqiyijumu", "jumu"], "aiqiyijumu"], [["momo", "kaiping"], "momo"], [["mojiyoushangjiao", "youshangjiao"], "mojiyoushangjiao"]]);
+            // 20170322 陈子博
+            channelMappings = channelMappings.concat([[["kol", "yangongzi"], "yangongzi"]]);
+            var uaContains = function (key) {
+                return navigator.userAgent.toLowerCase().indexOf(key.toLowerCase()) >= 0;
+            };
+            // 20170401 陈子博
+            channelMappings = channelMappings.concat([[["tencentxxldt", "xxldt"], "tencentxxldt"], [["tencent", "kaiping"], "tencentkp"], [["aiqiyizt", "zanting"], "aiqiyizt"], [["aiqiyijumu", "jumu"], "aiqiyijumu"], [["momo", "kaiping"], "momo"], [["enjoykp", "kaiping"], "enjoykp"], [["enjoyjd1", "jiaodian"], "enjoyjd1"], [["enjoyjd3", "jiaodian"], "enjoyjd3"], [["meiyankp", "kaiping"], "meiyankp"], [["weiboxxl", "xxldt"], "weiboxxl"], [["gt", "tuisong"], "getui"], [["wangyiyunmusickp", "kaiping"], "wangyiyunmusickp"], [["wangyiyunmusicwenzi", "wenzi"], "wangyiyunmusicwenzi"], [["wangyiyunmusictl", "tonglan"], "wangyiyunmusictl"], [["wangyiyunmusicjd", "jiaodian"], "wangyiyunmusicjd"], [["echokp", "kaiping"], "echokp"], [["echoxxl", "xxldt"], "echoxxl"], [["toutiaokp", "kaiping"], "toutiaokp"], [["toutiaoxxl", "xxldt"], "toutiaoxxl"]]);
+            // 20170411 叶艳丽
+            channelMappings = channelMappings.concat([[["tencentxxldt", "xxldt"], "tencentxxldt"], [["tencentkp", "kaiping"], "tencentkp"], [["aiqiyizt", "zanting"], "aiqiyizt"], [["aiqiyijumu", "jumu"], "aiqiyijumu"], [["meiyankp", "kaiping"], "meiyankp"], [["weiboxxl", "xxldt"], "weiboxxl"], [["gt", "tuisong"], "getui"], [["wangyiyunmusickp", "kaiping"], "wangyiyunmusickp"], [["wangyiyunmusictl", "tonglan"], "wangyiyunmusictl"], [["wangyiyunmusicjd", "jiaodian"], "wangyiyunmusicjd"], [["echokp", "kaiping"], "echokp"], [["echoxxl", "xxldt"], "echoxxl"], [["toutiaokp", "kaiping"], "toutiaokp"], [["toutiaoxxl", "xxldt"], "toutiaoxxl"], [["echogm", "gm"], "echogm"], [["kol", "nanduyule"], "nanduyule"]]);
+//            20170418 叶艳励
+            channelMappings = channelMappings.concat([
+                [
+                    ["tencentsh", "tiepian"], " tencentsh"
+                ],
+                [
+                    ["tencentgz", "tiepian"], " tencentgz"
+                ],
+                [
+                    ["tencentsz", "tiepian"], "tencentsz"
+                ],
+                [
+                    ["tencentbj", "tiepian"], "tencentbj"
+                ],
+                [
+                    ["tencentshb", "tiepian"], "tencentshb"
+                ],
+                [
+                    ["tencentgzb", "tiepian"], "tencentgzb"
+                ],
+                [
+                    ["tencentszb", "tiepian"], "tencentszb"
+                ],
+                [
+                    ["tencentbjb", "tiepian"], " tencentbjb"
+                ],
+                [
+                    ["aiqiyibj", "tiepian"], "aiqiyibj"
+                ],
+                [
+                    ["aiqiyish", "tiepian"], " aiqiyish"
+                ],
+                [
+                    ["aiqiyigz", "tiepian"], "aiqiyigz"
+                ],
+                [
+                    ["aiqiyisz", "tiepian"], "aiqiyisz"
+                ],
+                [
+                    ["aiqiyibj5", "tiepian"], "aiqiyibj5"
+                ],
+                [
+                    ["aiqiyish5", "tiepian"], "aiqiyish5"
+                ],
+                [
+                    ["aiqiyigz5", "tiepian"], "aiqiyigz5"
+                ],
+                [
+                    ["aiqiyisz5", "tiepian"], "aiqiyisz5"
+                ],
+                [
+                    ["aiqiyipn", "tiepian"], "aiqiyipn"
+                ],
+                [
+                    ["momo", "kaiping"], "momo"
+                ],
+                [
+                    ["meiyankp", "kaiping"], "meiyankp"
+                ],
+                [
+                    ["toutiaokp", "kaiping"], "toutiaokp"
+                ],
+                [
+                    ["mojikp", "kaiping"], "mojikp"
+                ],
+                [
+                    ["mojibanner", "banner"], "mojibanner"
+                ],
+                [
+                    ["xmlykp", "kaiping"], "xmlykp"
+                ],
+                [
+                    ["xmlysyjd", "syjd"], "xmlysyjd"
+                ],
+                [
+                    ["xmlyysdt", "ysdt"], "xmlyysdt"
+                ],
+                [
+                    ["xmlytp", "tiepian"], "xmlytp"
+                ],
+                [
+                    ["xmlyfljd", "fljd"], "xmlyfljd"
+                ],
+                [
+                    ["xmlybanner", "banner"], "xmlybanner"
+                ],
+                [
+                    ["nicetz", "tiezhi"], "nicetz"
+                ],
+                [
+                    ["nicekp", "kaiping"], "nicekp"
+                ],
+                [
+                    ["nicetz", "tongzhi"], "nicetz"
+                ],
+                [
+                    ["nicetj", "tuijian"], "nicetj"
+                ],
+                [
+                    ["nicefc", "feedcard"], "nicefc"
+                ],
+                [
+                    ["wechat", "shipin"], "wechat"
+                ],
+                [
+                    ["ykqlx", "shipin"], "ykqlx"
+                ],
+                [
+                    ["ql", "shipin"], "ql"
+                ],
+                [
+                    ["lc", "shipin"], "lc"
+                ],
+                [
+                    ["yt", "shipin"], "yt"
+                ],
+                [
+                    ["vmoiver", "shipin"], "vmoiver"
+                ],
+                [
+                    ["yjbj", "shipin"], "yjbj"
+                ],
+                [
+                    ["shtt", "shipin"], "shtt"
+                ],
+                [
+                    ["cdshj", "shipin"], "cdshj"
+                ],
+                [
+                    ["yesxm", "shipin"], "yesxm"
+                ],
+                [
+                    ["aspl", "shipin"], "aspl"
+                ],
+                [
+                    ["xmds", "shipin"], "xmds"
+                ],
+                [
+                    ["4Agg", "neirong"], "4Agg"
+                ],
+                [
+                    ["jcc", "neirong"], "jcc"
+                ],
+                [
+                    ["ggkr", "neirong"], "ggkr"
+                ],
+                [
+                    ["youtube", "shipin"], "youtube"
+                ],
+                [
+                    ["bg", "shipin"], "bg"
+                ],
+                [
+                    ["dkxx", "shipin"], "dkxx"
+                ],
+                [
+                    ["ygr", "shipin"], "ygr"
+                ],
+                [
+                    ["wodelx", "shipin"], "wodelx"
+                ],
+                [
+                    ["ykqlxwb", "shipin"], "ykqlxwb"
+                ]]);
+            channelMappings = channelMappings.concat([[["shanghaixx", "yp"], "shanghaixxyp"]]);
+            // 20170421 张瀚穹
+            channelMappings = channelMappings.concat([
+                [
+                    ["tongcheng", "xizhimen"], "tcxizhimen"
+                ],
+                [
+                    ["tongcheng", "wangjing"], "tcwangjing"
+                ],
+                [
+                    ["tongcheng", "guomao"], "tcguomao"
+                ],
+                [
+                    ["tongcheng", "dawanglu"], "tcdawanglu"
+                ],
+                [
+                    ["tongcheng", "dengxiang"], "tcdengxiang"
+                ],
+                [
+                    ["ysw", "zhongguancun"], "yswzhongguancun"
+                ],
+                [
+                    ["ysw", "xidan"], "yswxidan"
+                ],
+                [
+                    ["ysw", "dengxiang"], " yswdengxiang"
+                ],
+                [
+                    ["sanmu", "xierqi"], "smxierqi"
+                ],
+                [
+                    ["sanmu", "dengxiang"], "smdengxiang"
+                ],
+                [
+                    ["shanghai", "dengxiang"], "shdengxiang"
+                ],
+                [
+                    ["shanghai", "lujiazui"], "shlujiazui"
+                ],
+                [
+                    ["shanghai", "yujiahuil1"], "shxujiahuil1"
+                ],
+                [
+                    ["shanghai", "yujiahuil11"], "shxujiahuil11"
+                ],
+                [
+                    ["shanghai", "zhongshangongyuan"], "shzhongshangongyuan"
+                ],
+                [
+                    ["shanghai", "renminguangchang"], "shrenminguangchang"
+                ],
+                [
+                    ["shanghai", "renminguangchangd03"], "shrenminguangchangd03"
+                ],
+                [
+                    ["shanghai", "renminguangchangd04"], "shrenminguangchangd04"
+                ],
+                [
+                    ["shanghai", "dpnetwork"], "shdpnetwork"
+                ],
+                [
+                    ["baoye", "shenzhenbeizhan"], "szbybeizhan"
+                ],
+                [
+                    ["baoye", "dengxiang"], "szbydengxiang"
+                ],
+                [
+                    ["yswsz", "dengxiang"], "szyswdengxiang"
+                ],
+                [
+                    ["yswsz", "huizhan"], "szyswhuizhan"
+                ],
+                [
+                    ["yswsz", "laojie"], "szyswlaojie"
+                ],
+                [
+                    ["gz", "dengxiang"], "gzdgdengxiang"
+                ],
+                [
+                    ["gz", "lieshilingyuan"], "gzdglieshilingyuan"
+                ],
+                [
+                    ["gz", "line6"], "gzdgline6"
+                ],
+                [
+                    ["gz", "line7"], "gzdgline7"
+                ],
+                [
+                    ["gz", "line8"], "gzdgline8"
+                ],
+                [
+                    ["gzdt", "gongyuanqian"], "gzdtgongyuanqian"
+                ],
+                [
+                    ["gzdt", "tiyuxi"], "gzdttiyuxi"
+                ],
+                [
+                    ["gzdt", "zhujiang"], "gzdtzhujiang"
+                ],
+                [
+                    ["gzdt", "dengxiang"], "gzdtdengxiang"
+                ],
+                [
+                    ["fz", "beijing"], "fzbeijing"
+                ],
+                [
+                    ["fz", "shanghai"], "fzshanghai"
+                ],
+                [
+                    ["fz", "guangzhou"], "fzguangzhou"
+                ],
+                [
+                    ["fz", "shenzhen"], "fzshenzhen"
+                ],
+                [
+                    ["baima", "beijing"], "bmbeijing"
+                ],
+                [
+                    ["baima", "shanghai"], "bmshanghai"
+                ],
+                [
+                    ["baima", "guangzhou"], "bmguangzhou"
+                ],
+                [
+                    ["baima", "shenzhen"], "bmshenzhen"
+                ]]);
+            channelMappings = channelMappings.concat([[["shanghaixx", "yp"], "ofo-tdzq1"]]);
+            // 20170424 刘璐
+            channelMappings = channelMappings.concat([[["wechat", "luhanpyq"], "luhanpyq"]]);
+            //20170504
+            channelMappings = channelMappings.concat([[["lhbofo", "haibao"], "ppdlhbofohb"]]);
+            var uaContains = function (key) {
+                return navigator.userAgent.toLowerCase().indexOf(key.toLowerCase()) >= 0;
+            };
+
+            var USE_NOW = (window.location.href.indexOf('sms') >= 0) || (document.referrer.indexOf('sms') > 0) || (window.location.href.indexOf('use') >= 0) || (document.referrer.indexOf('use') > 0);
+            var WECHAT = ['MicroMessenger'].some(uaContains);
+            var ANDROID = ['Linux', 'Android'].every(uaContains); // can't just try "Android" as it might catch Windows Phone
+            var IOS = ['(iPhone;', '(iPod touch;', '(iPad;', '(iPod;'].some(uaContains); // can't just try "iPhone" as it might catch Windows Phone
+            var ALREADY_IN_OFO_APP = (navigator.userAgent.indexOf('OfoApp') >= 0 || window.ofoToken);
+
+            var matches = function (target, pattern) {
+                return (pattern instanceof RegExp) ? (pattern.test(target)) : (pattern === target);
+            };
+
+            window.addEventListener('DOMContentLoaded', function () {
+                console.log(window.OFO_ENV.query().app);
+                var el;
+                var channelMappedCur = channelMappings.filter(function (single) {
+                    return (matches(queryParamsCur['utm_source'], single[0][0]) && matches(queryParamsCur['utm_medium'], single[0][1]));
+                })[0];
+                var channelMappedRef = channelMappings.filter(function (single) {
+                    return (matches(queryParamsRef['utm_source'], single[0][0]) && matches(queryParamsRef['utm_medium'], single[0][1]));
+                })[0];
+                var webappUrl = 'https://' + window.location.host + '/newdist/?';
+
+                if (queryParamsCur['next']) {
+                    webappUrl += queryParamsCur['next'] + '&';
+                }
+                if(window.OFO_ENV.query().appversion != 'undefined' && window.OFO_ENV.query().appversion != undefined && window.OFO_ENV.query().appversion != ""){
+                    document.getElementsByClassName('local')[0].href = "https://img.ofo.com/apk"+window.OFO_ENV.query().appversion;
+                }
+                var channel = channelMappedCur || channelMappedRef;
+                if (channel) {
+                    if (channel[1] === 'bikeplateNew') { // 新车牌，带车牌号
+                        if (!queryParams['next']) {
+                            webappUrl += 'Journey&';
+                        }
+                        webappUrl += '~pressed=true&~carno=%22' + (channelMappedCur ? queryParamsCur : channelMappedRef)['utm_medium'] + '%22&';
+                    }
+                    document.getElementsByClassName('local')[0].href = document.getElementsByClassName('local')[0].href.replace('local', channel[1]);
+                    webappUrl += 'utm_source=download&utm_medium=' + channel[1] + '&';
+                }
+
+                var hashCode = function (s) {
+                    return s.split("").reduce(function (a, b) {
+                        a = ((a << 5) - a) + b.charCodeAt(0);
+                        return a & a;
+                    }, 0);
+                };
+                if ((Math.abs(hashCode(window.location.href + '\n' + navigator.userAgent)) % 10) === 10) {
+                    window.location.replace(webappUrl);
+                    throw 'NOT_AN_EXCEPTION';
+                }
+
+                document.getElementById('default').style.display = 'none';
+                document.getElementById('go-webapp').addEventListener('click', function () {
+                    window.location.assign(webappUrl);
+                });
+                if (ALREADY_IN_OFO_APP) {
+                    document.getElementById('webver').style.display = 'none';
+                    if (ANDROID) {
+                        document.getElementById('android-already-in-app').style.display = 'block';
+                        return;
+                    }
+                    if (IOS) {
+                        try {
+                            window.webkit.messageHandlers.ofo_iOS.postMessage({
+                                method: 'toSafari',
+                                params: document.getElementsByClassName('appstore')[0].href
+                            });
+                        } catch (e) {
+                        }
+                        document.getElementById('ios-already-in-app').style.display = 'block';
+                        return;
+                    }
+                }
+                if (WECHAT && IOS) {
+                    if(window.OFO_ENV.query().app){
+                        window.location.assign(window.OFO_ENV.query().app);
+                    }else{
+                        window.location.assign('http://a.app.qq.com/o/simple.jsp?pkgname=so.ofo.labofo');
+
+                    }
+
+                }
+                if (WECHAT) {
+                    el = document.getElementById('wechat');
+                    el.style.display = 'block';
+                    return;
+                }
+                if (ANDROID) {
+                    el = document.getElementById('android');
+                    el.style.display = 'block';
+                    el.appendChild(document.getElementById('android-content').cloneNode(true));
+                    if (USE_NOW) {
+                        document.getElementById('android-special-0').style.display = 'block';
+                        document.getElementById('android-special-0').children[0].click();
+                        document.getElementById('android-special-1').style.display = 'none';
+                    } else {
+                        window.setTimeout(function () {
+                            document.getElementsByClassName('local')[0].click();
+                        }, 125);
+                    }
+                    return;
+                }
+                if (IOS) {
+                    el = document.getElementById('ios');
+                    el.style.display = 'block';
+                    el.appendChild(document.getElementById('ios-content').cloneNode(true));
+                    if(window.OFO_ENV.query().app){
+                        window.location.assign(window.OFO_ENV.query().app)
+                    }else{
+                        window.location.href = 'ofoShareBicycleForIOSApp://';
+                        window.setTimeout(function () {
+                            document.getElementsByClassName('appstore')[0].click();
+                        }, 125);
+                    }
+
+                    return;
+                }
+                document.getElementById('default').style.display = 'block';
+            });
+        })();
+    </script>
+    <script language="javascript" type="text/javascript">
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+            a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-74862604-4', 'auto');
+        ga('send', 'pageview');
+    </script>
+</head>
+<body>
+<div id="wechat">
+    <div class="arrow"></div>
+    <div class="clear"></div>
+    <div class="hint">请点击右上角按钮，然后在弹出的菜单中选择「在浏览器中打开」以下载 ofo App 用车。</div>
+</div>
+<div id="android">
+    <div class="hint" id="android-special-0" style="display: none">如果你已经安装 ofo 共享单车，<a href="ofoapp://">点击此处打开</a>。您也可以点击下方下载：
+    </div>
+    <div class="hint" id="android-special-1">ofo Android 版 App 将开始下载。若下载未自动开始，您可手动点击下方按钮：</div>
+</div>
+<div id="ios">
+    <div class="hint">ofo iOS 版 App 将开始下载。若下载未自动开始，您可手动点击下方按钮：</div>
+</div>
+<div id="default">
+    <div class="hint">下载 ofo iOS 客户端：</div>
+    <div id="ios-content">
+        <a class="appstore" href="https://itunes.apple.com/cn/app/gong-xiang-dan-che/id1056015676"></a>
+    </div>
+    <div class="hint">下载 ofo Android 客户端：</div>
+    <div id="android-content">
+        <a class="local" href="https://img.ofo.com/apk/14105/ofo-local-14105.apk"></a>
+        <a class="play" href="https://play.google.com/store/apps/details?id=so.ofo.labofo"></a>
+    </div>
+</div>
+<div id="android-already-in-app">
+    <div class="hint">请从 App 的抽屉菜单更新您的 ofo 共享单车 app，或在应用商店中进行更新~</div>
+</div>
+<div id="ios-already-in-app">
+    <div class="hint">请进入 App Store 更新您的 ofo 共享单车 app~</div>
+</div>
+<div class="bike"></div>
+<div class="hint" id="webver">您也可以使用 <span class="a" id="go-webapp">Web 版用车</span>。</div>
+</body>
+</html>

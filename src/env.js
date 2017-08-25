@@ -13,9 +13,13 @@ var env = {
             isIOS: uap.os.name==='ios', //是否IOS环境
             osVer: uap.os.ver, //操作系统版本
             osMVer: uap.os.mver, //操作系统主版本
-            deviceVer: '0', //硬件版本
             appVer: '0', //APP版本
-            browserVer: '0' //浏览器版本
+            browser: uap.browser.name?uap.browser.name:'', //浏览器
+            browserVer: uap.browser.ver?uap.browser.ver:'0', //浏览器版本
+            browserMVer: uap.browser.mver?uap.browser.mver:0, //浏览器主版本
+            isWeChat: uap.browser.name? uap.browser.name==='WeChat':false,
+            isChrome:  uap.browser.name? uap.browser.name==='Chrome':false,
+            isMIUI:  uap.browser.name? uap.browser.name==='MIUI Browser':false
         };
         return _env;
     }

@@ -5,41 +5,93 @@ var FUNC_TYPE = 'function',
     STR_TYPE = 'string',
     NAME = 'name',
     VERSION = 'ver';
-/*var reg = {
-        isChrome: r(/webkit\W.*(chrome|chromium)\W/i),
-        isFirefox: r(/mozilla.*\Wfirefox\W/i),
-        isGecko: r(/mozilla(?!.*webkit).*\Wgecko\W/i),
-        isIE: function() {
-            return "Microsoft Internet Explorer" === navigator.appName || !!r(/\bTrident\b/)
-        },
-        isKindle: r(/\W(kindle|silk)\W/i),
-        isMobile: r(/(iphone|ipod|((?:android)?.*?mobile)|blackberry|nokia)/i),
-        isOpera: r(/opera.*\Wpresto\W|OPR/i),
-        isSafari: r(/webkit\W(?!.*chrome).*safari\W/i),
-        isTablet: r(/(ipad|android(?!.*mobile)|tablet)/i),
-        isTV: r(/googletv|sonydtv|appletv/i),
-        isWebKit: r(/webkit\W/i),
-        isAndroid: r(/android/i),
-        isIOS: r(/(ipad|iphone|ipod)/i),
-        isIPad: r(/ipad/i),
-        isIPhone: r(/iphone/i),
-        isIPod: r(/ipod/i),
-        isMQQ: r(/mqqbrowser/i),
-        isQQ: r(/qqbrowser/i),
-        isIMQQ: r(/\bQQ\b/i),
-        isUC: r(/uc browser|ucbrowser|ucweb/i),
-        is360: r(/qhbrowser|360(.+)browser/i),
-        isWechat: r(/micromessenger/i),
-        isBaidu: r(/baidubrowser|flyflow/i),
-        isLiebao: r(/liebao/i),
-        isSogou: r(/sogou|metasr/i),
-        isMaxthon: r(/maxthon/i),
-        isXiaoMi: r(/XiaoMi/i),
-        whoami: function() {
-            return window.navigator && navigator.userAgent || ""
-        };*/
+
 var regexes = {
-    browser: [],
+    browser: [
+        [
+
+            /((?:[\s\/])uc?\s?browser|(?:juc.+)ucweb)[\/\s]?([\w\.]+)/i
+            // UCBrowser
+        ],
+        [
+            [NAME, 'UCBrowser'], VERSION
+        ],
+        [
+
+            /(micromessenger)\/([\w\.]+)/i // WeChat
+        ],
+        [
+            [NAME, 'WeChat'], VERSION
+        ],
+        [
+
+            /(QQ)\/([\d\.]+)/i // QQ, aka ShouQ
+        ],
+        [NAME, VERSION],
+        [
+
+            /m?(qqbrowser)[\/\s]?([\w\.]+)/i // QQBrowser
+        ],
+        [NAME, VERSION],
+        [
+
+            /xiaomi\/miuibrowser\/([\w\.]+)/i // MIUI Browser
+        ],
+        [VERSION, [NAME, 'MIUI Browser']],
+        [
+
+            /;fbav\/([\w\.]+);/i // Facebook App for iOS & Android
+        ],
+        [VERSION, [NAME, 'Facebook']],
+        [
+
+            /(headlesschrome) ([\w\.]+)/i // Chrome Headless
+        ],
+        [VERSION, [NAME, 'Chrome Headless']],
+        [
+
+            /\swv\).+(chrome)\/([\w\.]+)/i // Chrome WebView
+        ],
+        [
+            [NAME, /(.+)/, '$1 WebView'], VERSION
+        ],
+        [
+
+            /((?:oculus|samsung)browser)\/([\w\.]+)/i
+        ],
+        [
+            [NAME, /(.+(?:g|us))(.+)/, '$1 $2'], VERSION
+        ],
+        [ // Oculus / Samsung Browser
+
+            /android.+version\/([\w\.]+)\s+(?:mobile\s?safari|safari)*/i // Android Browser
+        ],
+        [VERSION, [NAME, 'Android Browser']],
+        [/(chrome)\/v?([\w\.]+)/i
+            // Chrome
+        ],
+        [NAME, VERSION],
+        [
+            /((?:android.+)crmo|crios)\/([\w\.]+)/i // Chrome for Android/iOS
+        ],
+        [
+            [NAME, 'Chrome'], VERSION
+        ],
+        [
+
+            /fxios\/([\w\.-]+)/i // Firefox for iOS
+        ],
+        [VERSION, [NAME, 'Firefox']],
+        [
+
+            /version\/([\w\.]+).+?mobile\/\w+\s(safari)/i // Mobile Safari
+        ],
+        [VERSION, [NAME, 'Mobile Safari']],
+        [
+            /version\/([\w\.]+).+?(mobile\s?safari|safari)/i // Safari & Safari Mobile
+        ],
+        [VERSION, NAME]
+    ],
     os: [
         //只识别IOS、Android
         [
@@ -157,18 +209,20 @@ function uaParser(uaStr) {
      * 获取浏览器版本
      */
     this.getBrowser = function(ua) {
-        var browser = {
-            name: undefined,
-            version: undefined
-        };
-        mapper.rgx.call(browser, ua, rgxmap.browser);
-        browser.major = util.major(browser.version); // deprecated
-        return browser;
+        if (!this.browser) {
+            var browser = {};
+            mapper.rgx.call(browser, ua, regexes.browser);
+            this.browser = browser;
+            this.browser.mver = browser.ver ? Number.parseInt(browser.ver.replace(/^(\d+).*/, '$1')) : 0;
+            //this.browsbrowser.major = util.major(browser.version); // deprecated
+        }
+        return this.browser;
     };
 
     function _init(uaStr) {
         this.ua = uaStr;
         this.os = this.getOS(uaStr);
+        this.browser = this.getBrowser(uaStr);
     };
     _init.call(this, uaStr);
 }

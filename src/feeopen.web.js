@@ -1,5 +1,5 @@
 var getUrlParameter = require('./util').getUrlParameter;
-var feeOpen = require('./index');
+var feeOpen = require('./feeopen');
 /**
  * 🏊应用于业务的fee-open库,通过url参数或配置初始化fee-open库
  * @param {Object} config - 初始化配置.
