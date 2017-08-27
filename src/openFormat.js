@@ -16,6 +16,11 @@ var getUrlParameter = require('./util').getUrlParameter;
  * @returns {object} - fee-open格式url
  */
 function _openFormat(schema, webviewUrl, downloadUrl, intentData, universalUrl) {
+    schema = schema?schema:{};
+    webviewUrl = webviewUrl?webviewUrl:'';
+    downloadUrl=downloadUrl?downloadUrl:'';
+    intentData=intentData?intentData:{};
+    universalUrl=universalUrl?universalUrl:'';
     var schemaValue = schema.value || getUrlParameter('schema');
     var urls = {
         schema: '',

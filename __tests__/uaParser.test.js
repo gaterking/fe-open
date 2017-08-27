@@ -93,7 +93,6 @@ test('ua browser Chrome',()=>{
     ]
     let uap;
     ua.forEach(u=>{
-        debugger;
         uap = new uaParser(u[0]);
         expect(uap.browser.name).to.equal('Chrome');
         expect(uap.browser.ver).to.equal(u[2]);
