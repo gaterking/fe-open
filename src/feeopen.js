@@ -3,9 +3,7 @@ var env = require('./env');
  * fee-open
  */
 function feeOpen(config, ua) {
-    
     var currentEnv; //当前环境变量
-
     function openByIframe(url) {
         var _this = this;
         if (document) {
@@ -14,7 +12,7 @@ function feeOpen(config, ua) {
             ifa.src = url; //APP的schema协议
             ifa.style.display = 'none';
             document.body.appendChild(ifa);
-            setTimeout(function () {
+            setTimeout(function() {
                 document.body.removeChild(ifa);
                 if (Date.now() - openStartTime <= 2500) {
                     //唤醒失败。如果唤醒成功，页面会转到后台，web的计时器会停止，返回后，时间会超过2500ms
@@ -26,7 +24,7 @@ function feeOpen(config, ua) {
                         //http://echizen.github.io/tech/2015/02-23-map-api-for-web-page
                     }
                     if (_this.config.downloadUrl && _this.config.downloadUrl !== '') {
-                        window.location.href = _this.config.downloadUrl; //APP下载页
+                        _this.download(_this.config.downloadUrl); //APP下载页
                     }
                 } else {
                     //唤醒成功
@@ -50,31 +48,37 @@ function feeOpen(config, ua) {
 
     function openByLocation(url) {
         if (window) {
-            indow.location.href = url;
+            window.location.href = url;
         }
     }
 
-    this.open = function (urls) {
+    this.download = function(url){
+        if(url || this.config.downloadUrl){
+            window.location.href = (url || this.config.downloadUrl); //APP下载页
+        }
+    };
+
+    this.open = function(urls) {
         if (this.config.isApp) //已经在APP里面，无需打开
             return false;
         if (this.config.callback.onStart && typeof this.config.callback.onStart === 'function') {
             this.config.callback.onStart();
         }
         if (currentEnv.isIOS && currentEnv.osMVer >= 9) {
-            openByIframe.call(openByLocation(urls && urls.universalUrl ? urls.universalUrl : this.config.universalUrl));
+            openByLocation.call(this,urls && urls.universalUrl ? urls.universalUrl : this.config.universalUrl);
         } else if (currentEnv.isAndroid && currentEnv.isChrome) {
             //Android + Chrome = intent
             //在Android Chrome浏览器中，版本号在chrome 25+的版本不在支持通过传统schema的方法唤醒App，比如通过设置window.location = "xxxx://login"将无法唤醒本地客户端。需要通过Android Intent 来唤醒APP
-            openByIframe.call(this,openByLocation(urls && urls.intent ? urls.intent : this.config.intent));
+            openByLocation.call(this, urls && urls.intent ? urls.intent : this.config.intent);
         } else {
-            openByIframe.call(this,(urls && urls.schema ? urls.schema : this.config.schema));
+            openByIframe.call(this, (urls && urls.schema ? urls.schema : this.config.schema));
         }
         if (this.config.callback.onEnd && typeof this.config.callback.onEnd === 'function') {
             this.config.callback.onEnd();
         }
     };
 
-    this.start = function () {
+    this.start = function() {
         if (this.config.auto) {
             this.open();
         }
@@ -102,10 +106,10 @@ feeOpen.prototype.config = {
     intent: '', //android intent地址
     downloadUrl: '', //下载地址
     callback: {
-        onStart: function () {},
-        onEnd: function () {},
-        onSuccess: function () {},
-        onFail: function () {}
+        onStart: function() {},
+        onEnd: function() {},
+        onSuccess: function() {},
+        onFail: function() {}
     }
 };
 

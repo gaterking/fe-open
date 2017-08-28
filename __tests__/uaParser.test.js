@@ -53,7 +53,7 @@ test('ua browser IOS safari',()=>{
 });
 
 
-test('ua browser IOS Android',()=>{
+test('ua browser Android',()=>{
     var ua = [
         ["Android/5.0 (Linux; U; Android 4.2; en-gb; GT-P1000 Build/ICECREAM) AppleWebKit/633.1 (KHTML, like Gecko) Version/5.0 Mobile Safari/633.1",5,'5.0'],
         ["Mozilla/5.0 (Linux; U; Android 4.1.1; zh-cn; SCH-N719 Build/JRO03C) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30",4,'4.0'],

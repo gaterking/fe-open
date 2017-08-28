@@ -1,3 +1,9 @@
+/**
+ * 获取url query参数
+ * 
+ * @param {string} key
+ * @returns - value
+ */
 function getUrlParameter(name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');

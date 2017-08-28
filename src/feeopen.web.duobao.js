@@ -12,28 +12,35 @@ function createSchema(moduleTarget) {
     return schema;
 }
 
-function feeOpenDuobao(moduleTarget) {
+function feeOpenDuobao(moduleTarget,) {
+    moduleTarget= moduleTarget?moduleTarget:'';
     var schema = createSchema(moduleTarget); //默认模块schema
     var donwloadUrl = 'https://app.henkuaigou.com/applinks/download.htm';
-    var sFrom = getUrlParameter('sFrom') || 'oneduobaoshipei';
-    var wPrefix = getUrlParameter('wprefix') || 1;
-    var schemaUrl = 'duobaohkg://webview?url='+ encodeURIComponent(top.location.href) || 'duobaohkg://http%3A%2F%2Fm.henkuaigou.com';
-    
-
-    var flow = new feeOpenWeb({
-        universalUrlPrefix: '',
-        downloadUrl: donwloadUrl + '?schema=' + schema + '&from=' + sFrom + '&wprefix=' + wPrefix,//落地页
-        schemaPrefix: '',
-        appFlag: 'duobaoApp'
-    });
+    var openWeb;
 
     function _init() {
-
+        openWeb = feeOpenWeb.init({
+            name: 'duobaohkg://',
+            value: schema
+        }, {
+            name: '//duobao',
+            package: 'com.henkuaigou.kuaiduobao',
+            schema: schema,
+            fallbackUrl: ''
+        }, '', '', donwloadUrl, 'duobaohkg');
+        openWeb.start();
     }
-    this.open = function(moduleName) {
 
-    };
-    _init.call(this);
+    _init.call(this,);
+}
+
+var feeOpenDuobaoInstance;
+
+function init(moduleTarget) {
+    if (!feeOpenDuobaoInstance) {
+        feeOpenDuobaoInstance = new feeOpenDuobao(moduleTarget);
+    }
+    return feeOpenDuobaoInstance;
 }
 
 module.exports.init = init;

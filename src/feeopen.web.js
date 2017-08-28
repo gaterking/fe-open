@@ -37,7 +37,7 @@ function feeOpenWeb(schema, intentData, universalUrl, webviewUrl, downloadUrl, a
 
     function _parseUrlQueryConfig() {
         //解析url query，生成配置
-        var isAutoOpen = getUrlParameter('open');
+        var isAutoOpen = getUrlParameter('auto');
         isAutoOpen = isAutoOpen === '' ? '' : (isAutoOpen === 'true' || isAutoOpen === '1') ? true : false;
         return {
             auto: isAutoOpen
@@ -61,19 +61,37 @@ function feeOpenWeb(schema, intentData, universalUrl, webviewUrl, downloadUrl, a
         }
     }
 
+    /**
+     * 初始化dom按钮监听事件
+     * 
+     */
+    function _initElementsEvent(){
+        var _this = this;
+        window.addEventListener('click', function(e){
+            var targetElement = e.target;
+            if(targetElement.classList.contains('feeopen')){
+                _this.open();
+            }
+            if(targetElement.classList.contains('feeopen-download')){
+                _this.download();
+            }
+        }, false);
+    }
+
     function _init(config) {
         var queryConfig = _parseUrlQueryConfig();
         this.config.auto = queryConfig.auto && typeof queryConfig.auto === 'boolean' ? queryConfig.auto : config.auto;
         this.config.isApp = _isAPP();
         /*arguments.callee.prototype.constructor.prototype.area(); //子类里调用父方法area
         arguments.callee.prototype.area();//子类里调用重载方法area*/
+        _initElementsEvent.call(this);
     }
     _init.call(this, config);
 }
 feeOpenWeb.prototype = Object.create(feeOpen.prototype);
 feeOpenWeb.prototype.constructor = feeOpenWeb;
 
-function _init(schema, intentData, universalUrl, webviewUrl, downloadUrl, appFlag,callback) {
-    return new feeOpenWeb(schema, intentData, universalUrl, webviewUrl, downloadUrl, appFlag,callback);
+function _init(schema, intentData, universalUrl, webviewUrl, downloadUrl, appFlag, callback) {
+    return new feeOpenWeb(schema, intentData, universalUrl, webviewUrl, downloadUrl, appFlag, callback);
 }
 module.exports.init = _init;
