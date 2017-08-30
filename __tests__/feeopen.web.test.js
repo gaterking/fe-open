@@ -16,7 +16,7 @@ beforeAll(() => {
     testConfig.appFlag = 'duobaohkg'
 });
 beforeEach(() => {
-    feeOpenWeb = require('../src/feeopen.web');
+    feeOpenWeb = require('../src/index');
 });
 /**
  * @jest-environment jsdom

@@ -106,6 +106,7 @@ function feeOpen(config, ua) {
     /**
      * start
      * 执行open库，在初始化之后调用
+     * @param {boolean} open -是否自动打开，如果未配置，则自动读取url参数的auto属性
      */
     this.start = function(open) {
         if (open || (open!==false && this.config.autoOpen)) {
@@ -139,6 +140,7 @@ function feeOpen(config, ua) {
  * @property {wakeupCallback} callback.onEnd -
  * @property {wakeupCallback} callback.onSuccess -
  * @property {wakeupCallback} callback.onFail  -
+ * @property {wakeupCallback} callback.onWeChat  -
  */
 feeOpen.prototype.config = {
     isApp: false,
@@ -156,7 +158,7 @@ feeOpen.prototype.config = {
 };
 
 /**
- * feeOpen蕾
+ * feeOpen
  * @module feeOpen
  * @see {@link feeOpen}
  * @returns {feeOpen}

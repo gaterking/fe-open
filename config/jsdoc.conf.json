@@ -1,12 +1,12 @@
 {
     "plugins": ["plugins/markdown"],
     "source": {
-        "include": ["src/feeopen.web.js","src/feeopen.js"],
+        //"include": ["src/index.js","src/feeopen.js"],
         "includePattern": ".+\\.js(doc|x)?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },
     "opts": {
         "encoding": "utf8", // same as -e utf8
-        "destination": "./doc/"
+        "destination": "./docs/"
     }
 }

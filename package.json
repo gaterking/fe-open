@@ -9,12 +9,13 @@
         "test": "node ./node_modules/jest/bin/jest --config=./config/jest.config.js",
         "build": "webpack --config config/webpack.prod.config.js",
         "dev": "webpack-dev-server --config config/webpack.dev.config.js",
-        "doc": "jsdoc -c config/jsdoc.conf.json"
+        "doc":"jsdoc2md --no-cache -c config/jsdoc.conf.json >> docs/api.md"
     },
     "author": "gzliruixi",
     "license": "ISC",
     "devDependencies": {
         "jest": "^20.0.4",
+        "jsdoc-to-markdown": "^3.0.0",
         "webpack": "^3.5.5",
         "webpack-dev-server": "^2.7.1",
         "webpack-merge": "^4.1.0"

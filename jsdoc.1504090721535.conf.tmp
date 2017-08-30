@@ -1,1 +1,0 @@
-{"plugins":["plugins/markdown"],"source":{"include":["../src/feeopen.web.js"],"includePattern":".+\\.js(doc|x)?$","excludePattern":"(^|\\/|\\\\)_"}}

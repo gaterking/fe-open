@@ -29,6 +29,7 @@ var openFormat = require('./openFormat').openFormat;
  * @param {wakeupCallback} callback.onEnd -
  * @param {wakeupCallback} callback.onSuccess -
  * @param {wakeupCallback} callback.onFail  -
+ * @param {wakeupCallback} callback.onWeChat -当前环境是微信
  */
 function feeOpenWeb(schema, intentData, universalUrl, downloadUrl, appFlag, callback) {
     var urls = openFormat(schema, downloadUrl, intentData, universalUrl);
