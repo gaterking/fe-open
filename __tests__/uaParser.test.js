@@ -1,4 +1,3 @@
-var expect = require('chai').expect;
 var uaParser = require('../src/uaParser.js');
 
 
@@ -14,9 +13,9 @@ test('ua OS IOS',()=>{
     let uap;
     ua.forEach(u=>{
         uap = new uaParser(u[0]);
-        expect(uap.os.name).to.equal('ios');
-        expect(uap.os.ver).to.equal(u[2]);
-        expect(uap.os.mver).to.equal(u[1]);
+        expect(uap.os.name).toBe('ios');
+        expect(uap.os.ver).toBe(u[2]);
+        expect(uap.os.mver).toBe(u[1]);
     });
 });
 
@@ -31,9 +30,9 @@ test('ua OS Android',()=>{
     let uap;
     ua.forEach(u=>{
         uap = new uaParser(u[0]);
-        expect(uap.os.name).to.equal('android');
-        expect(uap.os.ver).to.equal(u[2]);
-        expect(uap.os.mver).to.equal(u[1]);
+        expect(uap.os.name).toBe('android');
+        expect(uap.os.ver).toBe(u[2]);
+        expect(uap.os.mver).toBe(u[1]);
     });
 });
 
@@ -46,9 +45,9 @@ test('ua browser IOS safari',()=>{
     let uap;
     ua.forEach(u=>{
         uap = new uaParser(u[0]);
-        expect(uap.browser.name).to.equal('Mobile Safari');
-        expect(uap.browser.ver).to.equal(u[2]);
-        expect(uap.browser.mver).to.equal(u[1]);
+        expect(uap.browser.name).toBe('Mobile Safari');
+        expect(uap.browser.ver).toBe(u[2]);
+        expect(uap.browser.mver).toBe(u[1]);
     });
 });
 
@@ -63,9 +62,9 @@ test('ua browser Android',()=>{
     let uap;
     ua.forEach(u=>{
         uap = new uaParser(u[0]);
-        expect(uap.browser.name).to.equal('Android Browser');
-        expect(uap.browser.ver).to.equal(u[2]);
-        expect(uap.browser.mver).to.equal(u[1]);
+        expect(uap.browser.name).toBe('Android Browser');
+        expect(uap.browser.ver).toBe(u[2]);
+        expect(uap.browser.mver).toBe(u[1]);
     });
 });
 
@@ -78,9 +77,9 @@ test('ua browser MIUI',()=>{
     let uap;
     ua.forEach(u=>{
         uap = new uaParser(u[0]);
-        expect(uap.browser.name).to.equal('MIUI Browser');
-        expect(uap.browser.ver).to.equal(u[2]);
-        expect(uap.browser.mver).to.equal(u[1]);
+        expect(uap.browser.name).toBe('MIUI Browser');
+        expect(uap.browser.ver).toBe(u[2]);
+        expect(uap.browser.mver).toBe(u[1]);
     });
 });
 
@@ -94,8 +93,8 @@ test('ua browser Chrome',()=>{
     let uap;
     ua.forEach(u=>{
         uap = new uaParser(u[0]);
-        expect(uap.browser.name).to.equal('Chrome');
-        expect(uap.browser.ver).to.equal(u[2]);
-        expect(uap.browser.mver).to.equal(u[1]);
+        expect(uap.browser.name).toBe('Chrome');
+        expect(uap.browser.ver).toBe(u[2]);
+        expect(uap.browser.mver).toBe(u[1]);
     });
 });

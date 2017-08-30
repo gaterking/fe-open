@@ -1,5 +1,5 @@
-var getUrlParameter = require('./util').getUrlParameter;
-var feeOpenWeb = require('../src/feeopen.web');
+var getUrlParameter = require('../util').getUrlParameter;
+var feeOpenWeb = require('../../src/index');
 
 function createSchema(moduleTarget) {
     var s = moduleTarget.split('://');
@@ -12,26 +12,46 @@ function createSchema(moduleTarget) {
     return schema;
 }
 
-function feeOpenDuobao(moduleTarget,) {
-    moduleTarget= moduleTarget?moduleTarget:'';
+function feeOpenDuobao(moduleTarget) {
+    moduleTarget = moduleTarget ? moduleTarget : '';
     var schema = createSchema(moduleTarget); //默认模块schema
     var donwloadUrl = 'https://app.henkuaigou.com/applinks/download.htm';
     var openWeb;
 
     function _init() {
         openWeb = feeOpenWeb.init({
-            name: 'duobaohkg://',
+            protocal: 'duobaohkg://',
             value: schema
         }, {
-            name: '//duobao',
+            host: '//duobao',
             package: 'com.henkuaigou.kuaiduobao',
             schema: schema,
             fallbackUrl: ''
-        }, '', '', donwloadUrl, 'duobaohkg');
+        }, 
+        'https://twitter.com',
+        donwloadUrl, 
+        'duobaohkg', 
+        {
+            onStart: function() {
+                //console.log('start:' + Date());
+            },
+            onEnd: function() {
+                //console.log('end:' + Date());
+            },
+            onSuccess: function() {
+                //console.log('success:' + Date());
+            },
+            onFail: function() {
+                //console.log('fail:' + Date());
+            },
+            onWeChat:function(){
+                console.log('wechat show download');
+            }
+        });
         openWeb.start();
     }
 
-    _init.call(this,);
+    _init.call(this);
 }
 
 var feeOpenDuobaoInstance;

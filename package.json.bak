@@ -1,2 +1,0 @@
-
-    //"test:debug": "node --inspect-brk ./node_modules/jest/bin/jest --config=./config/jest.config.js --runInBand -i --env jest-environment-node-debug",

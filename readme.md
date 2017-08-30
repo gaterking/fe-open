@@ -1,0 +1,1 @@
+android + chrome:schema/intent 都能够手动唤醒，手动唤醒指 1.设置url href,手动点击后唤醒 2.javascript设置location唤醒，但需要从别的url跳转进来才能触发生效

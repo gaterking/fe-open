@@ -1,0 +1,13 @@
+__mocks__
+__tests__
+config
+doc
+jest
+sample
+node_modules
+.gitignore
+.npmignore
+*.tgz
+*.conf.tmp
+package-lock.json
+package.json

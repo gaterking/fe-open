@@ -2,25 +2,39 @@ var getUrlParameter = require('./util').getUrlParameter;
 var feeOpen = require('./feeopen');
 var openFormat = require('./openFormat').openFormat;
 /**
- * 🏊应用于业务的fee-open库,通过url参数或配置初始化fee-open库
- * @param {Object} schema - schema定义
- * @param {string} schema.protocal - schema协议
- * @param {string} schema.value - schema值，默认值为url参数?schema=默认值
- * @param {object} intentData  - android intent定义
- * @param {string} intentData.name  - android intent
- * @param {string} intentData.schema  - android intent
- * @param {string} intentData.package  - android intent
- * @param {string} intentData.fallbackUrl  - android intent
- * @param {string} universalUrl - unitersal地址
- * @param {string} webviewUrl - 默认webview url
- * @param {string} downloadUrl - 下载地址，区分当前环境的下载地址
- * @param {string | function} appFlag - app UA判断标识
+ * 唤醒回调函数
+ * @callback wakeupCallback
  */
-function feeOpenWeb(schema, intentData, universalUrl, webviewUrl, downloadUrl, appFlag, callback) {
-    var urls = openFormat(schema, webviewUrl, downloadUrl, intentData, universalUrl);
+/**
+ * 应用于业务的fee-open库,通过url参数或配置初始化fee-open库
+ * .feeopen, .feeopen-download，监听.feeopen, .feeopen-download的click事件，手动进行open和download操作
+ * @class
+ * @implements {feeOpen}
+ * @param {Object} schema - schema定义
+ * @param {string} schema.protocal - schema协议，例如duobaohkg://
+ * @param {string} schema.value - schema值
+ * @param {Object} intentData  - android intent定义，自动格式成intent link，与Android intent格式一直，例如intent://send/+XXXXXXXXXXX#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end
+ * @param {string} intentData.host  - HOST/URI-path
+ * @param {string} intentData.schema  -
+ * @param {string} intentData.package  -
+ * @param {string} intentData.action -
+ * @param {string} intentData.category -
+ * @param {string} intentData.component -
+ * @param {string} intentData.fallbackUrl  -
+ * @param {string} universalUrl - unitersal地址
+ * @param {string | string[]} downloadUrl - 下载地址，如果是数组，[IOS地址, Android地址]，如果是字符串，则为统一下载页面
+ * @param {string | function} appFlag - app UA判断标识
+ * @param {object} callback - 回调对象
+ * @param {wakeupCallback} callback.onStart -
+ * @param {wakeupCallback} callback.onEnd -
+ * @param {wakeupCallback} callback.onSuccess -
+ * @param {wakeupCallback} callback.onFail  -
+ */
+function feeOpenWeb(schema, intentData, universalUrl, downloadUrl, appFlag, callback) {
+    var urls = openFormat(schema, downloadUrl, intentData, universalUrl);
     var config = {
         isApp: false,
-        auto: false, //是否自动打开
+        autoOpen: false, //是否自动打开
         schema: urls.schema,
         universalUrl: urls.universalUrl, //ios 9 universal url
         intent: urls.intent, //android intent地址
@@ -29,7 +43,8 @@ function feeOpenWeb(schema, intentData, universalUrl, webviewUrl, downloadUrl, a
             onStart: callback && callback.onStart ? callback.onStart : null,
             onEnd: callback && callback.onEnd ? callback.onEnd : null,
             onSuccess: callback && callback.onSuccess ? callback.onSuccess : null,
-            onFail: callback && callback.onFail ? callback.onFail : null
+            onFail: callback && callback.onFail ? callback.onFail : null,
+            onWeChat:callback && callback.onWeChat ? callback.onWeChat : null,
         }
     };
 
@@ -46,7 +61,7 @@ function feeOpenWeb(schema, intentData, universalUrl, webviewUrl, downloadUrl, a
 
     /**
      * 判断是否在指定APP里面
-     * 
+     * @private
      * @returns boolean
      */
     function _isAPP() {
@@ -63,16 +78,16 @@ function feeOpenWeb(schema, intentData, universalUrl, webviewUrl, downloadUrl, a
 
     /**
      * 初始化dom按钮监听事件
-     * 
+     * @private
      */
-    function _initElementsEvent(){
+    function _initElementsEvent() {
         var _this = this;
-        window.addEventListener('click', function(e){
+        window.addEventListener('click', function(e) {
             var targetElement = e.target;
-            if(targetElement.classList.contains('feeopen')){
+            if (targetElement.classList.contains('feeopen')) {
                 _this.open();
             }
-            if(targetElement.classList.contains('feeopen-download')){
+            if (targetElement.classList.contains('feeopen-download')) {
                 _this.download();
             }
         }, false);
@@ -80,7 +95,7 @@ function feeOpenWeb(schema, intentData, universalUrl, webviewUrl, downloadUrl, a
 
     function _init(config) {
         var queryConfig = _parseUrlQueryConfig();
-        this.config.auto = queryConfig.auto && typeof queryConfig.auto === 'boolean' ? queryConfig.auto : config.auto;
+        this.config.autoOpen = queryConfig.auto && typeof queryConfig.auto === 'boolean' ? queryConfig.auto : config.autoOpen;
         this.config.isApp = _isAPP();
         /*arguments.callee.prototype.constructor.prototype.area(); //子类里调用父方法area
         arguments.callee.prototype.area();//子类里调用重载方法area*/
@@ -91,7 +106,13 @@ function feeOpenWeb(schema, intentData, universalUrl, webviewUrl, downloadUrl, a
 feeOpenWeb.prototype = Object.create(feeOpen.prototype);
 feeOpenWeb.prototype.constructor = feeOpenWeb;
 
-function _init(schema, intentData, universalUrl, webviewUrl, downloadUrl, appFlag, callback) {
-    return new feeOpenWeb(schema, intentData, universalUrl, webviewUrl, downloadUrl, appFlag, callback);
+function _init(schema, intentData, universalUrl, downloadUrl, appFlag, callback) {
+    return new feeOpenWeb(schema, intentData, universalUrl, downloadUrl, appFlag, callback);
 }
+/**
+ * 初始化feeOpenWeb，new feeOpenWeb
+ * @module init
+ * @see {@link feeOpenWeb}
+ * @returns {feeOpenWeb}
+ */
 module.exports.init = _init;

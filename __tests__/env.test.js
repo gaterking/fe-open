@@ -1,4 +1,3 @@
-var expect = require('chai').expect;
 var env = require('../src/env.js');
 
 
@@ -14,10 +13,10 @@ test('env IOS',()=>{
     let myEnv;
     ua.forEach(u=>{
         myEnv = env.getEnv(u[0]);
-        expect(myEnv.isIOS).to.equal(true);
-        expect(myEnv.isAndroid).to.equal(false);
-        expect(myEnv.osVer).to.equal(u[2]);
-        expect(myEnv.osMVer).to.equal(u[1]);
+        expect(myEnv.isIOS).toBe(true);
+        expect(myEnv.isAndroid).toBe(false);
+        expect(myEnv.osVer).toBe(u[2]);
+        expect(myEnv.osMVer).toBe(u[1]);
     });
 });
 
@@ -32,9 +31,9 @@ test('env Android',()=>{
     let myEnv;
     ua.forEach(u=>{
         myEnv = env.getEnv(u[0]);
-        expect(myEnv.isIOS).to.equal(false);
-        expect(myEnv.isAndroid).to.equal(true);
-        expect(myEnv.osVer).to.equal(u[2]);
-        expect(myEnv.osMVer).to.equal(u[1]);
+        expect(myEnv.isIOS).toBe(false);
+        expect(myEnv.isAndroid).toBe(true);
+        expect(myEnv.osVer).toBe(u[2]);
+        expect(myEnv.osMVer).toBe(u[1]);
     });
 });
