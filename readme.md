@@ -1,10 +1,16 @@
 # 项目介绍
  fee-open是一个用于H5唤醒移动APP的库，通过一些配置，自动识别H5执行的机型、浏览器环境，调用适配的方式唤醒原生APP，目前支持一下几种调用方式：
+
 | 调用方式 | 系统 | 浏览器 | 优先级(1最大) |
+
 | :----------------- |:----------:| :----------:||
+
 | schema      | ALL | ALL| 3 |
+
 | intent      | Android | chrome | 2 |
+
 | universal link | IOS >= 9 | Safari| 1 |
+
 | deep link|||/|
 
 
@@ -78,5 +84,7 @@ feedown_web.download(...);
 # Document
 # 唤醒知识
 android + chrome: schema/intent 都能够手动唤醒：
+
 1.设置url href,手动点击后唤醒 
+
 2.javascript设置location唤醒，但需要从别的url跳转进来才能触发生效
