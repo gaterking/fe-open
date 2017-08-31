@@ -1,6 +1,6 @@
 {
     "name": "fe-open",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "H5打开原生APP",
     "entry point": "src/index.js",
     "main": "index.js",

@@ -32,7 +32,7 @@ var openFormat = require('./openFormat').openFormat;
  * @param {wakeupCallback} callback.onWeChat -当前环境是微信
  */
 function feOpenWeb(schema, intentData, universalUrl, downloadUrl, appFlag, callback) {
-    this.version="0.1.0";
+    this.version="0.1.1";
     var urls = openFormat(schema, downloadUrl, intentData, universalUrl);
     var config = {
         isApp: false,
