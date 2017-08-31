@@ -1,7 +1,7 @@
 {
     "plugins": ["plugins/markdown"],
     "source": {
-        //"include": ["src/index.js","src/feeopen.js"],
+        //"include": ["src/index.js","src/feopen.js"],
         "includePattern": ".+\\.js(doc|x)?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },

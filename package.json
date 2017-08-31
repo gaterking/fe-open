@@ -1,5 +1,5 @@
 {
-    "name": "fee-open",
+    "name": "fe-open",
     "version": "0.1.0",
     "description": "H5打开原生APP",
     "entry point": "src/index.js",
@@ -7,9 +7,9 @@
     "scripts": {
         "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest --config=./config/jest.config.js --runInBand",
         "test": "node ./node_modules/jest/bin/jest --config=./config/jest.config.js",
-        "build": "webpack --config config/webpack.prod.config.js",
+        "build": "webpack --config config/webpack.prod.config.js && npm run doc",
         "dev": "webpack-dev-server --config config/webpack.dev.config.js",
-        "doc":"jsdoc2md --no-cache -c config/jsdoc.conf.json >> docs/api.md"
+        "doc": "jsdoc2md --no-cache -c config/jsdoc.conf.json >> docs/api.md"
     },
     "author": "gzliruixi",
     "license": "ISC",

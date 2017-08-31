@@ -1,13 +1,9 @@
 __mocks__
 __tests__
-config
-doc
-jest
-sample
+docs
 node_modules
 .gitignore
 .npmignore
 *.tgz
 *.conf.tmp
 package-lock.json
-package.json

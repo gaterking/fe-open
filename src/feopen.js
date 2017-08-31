@@ -1,9 +1,9 @@
 var env = require('./env');
 /**
- * feeOpen 唤醒库核心基类，对各个移动端环境进行兼容性处理
+ * feOpen 唤醒库核心基类，对各个移动端环境进行兼容性处理
  * @class
  */
-function feeOpen(config, ua) {
+function feOpen(config, ua) {
     var currentEnv; //当前环境变量
     function openByIframe(url) {
         var _this = this;
@@ -142,7 +142,7 @@ function feeOpen(config, ua) {
  * @property {wakeupCallback} callback.onFail  -
  * @property {wakeupCallback} callback.onWeChat  -
  */
-feeOpen.prototype.config = {
+feOpen.prototype.config = {
     isApp: false,
     autoOpen: false, //是否自动打开
     schema: '',
@@ -158,9 +158,9 @@ feeOpen.prototype.config = {
 };
 
 /**
- * feeOpen
- * @module feeOpen
- * @see {@link feeOpen}
- * @returns {feeOpen}
+ * feOpen
+ * @module feOpen
+ * @see {@link feOpen}
+ * @returns {feOpen}
  */
-module.exports = feeOpen;
+module.exports = feOpen;

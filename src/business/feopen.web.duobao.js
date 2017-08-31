@@ -1,5 +1,5 @@
 var getUrlParameter = require('../util').getUrlParameter;
-var feeOpenWeb = require('../../src/index');
+var feOpenWeb = require('../../src/index');
 
 function createSchema(moduleTarget) {
     var s = moduleTarget.split('://');
@@ -12,14 +12,14 @@ function createSchema(moduleTarget) {
     return schema;
 }
 
-function feeOpenDuobao(moduleTarget) {
+function feOpenDuobao(moduleTarget) {
     moduleTarget = moduleTarget ? moduleTarget : '';
     var schema = createSchema(moduleTarget); //默认模块schema
     var donwloadUrl = 'https://app.henkuaigou.com/applinks/download.htm';
     var openWeb;
 
     function _init() {
-        openWeb = feeOpenWeb.init({
+        openWeb = feOpenWeb.init({
             protocal: 'duobaohkg://',
             value: schema
         }, {
@@ -54,13 +54,13 @@ function feeOpenDuobao(moduleTarget) {
     _init.call(this);
 }
 
-var feeOpenDuobaoInstance;
+var feOpenDuobaoInstance;
 
 function init(moduleTarget) {
-    if (!feeOpenDuobaoInstance) {
-        feeOpenDuobaoInstance = new feeOpenDuobao(moduleTarget);
+    if (!feOpenDuobaoInstance) {
+        feOpenDuobaoInstance = new feOpenDuobao(moduleTarget);
     }
-    return feeOpenDuobaoInstance;
+    return feOpenDuobaoInstance;
 }
 
 module.exports.init = init;

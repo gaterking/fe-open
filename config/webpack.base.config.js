@@ -2,14 +2,14 @@ const path = require('path');
 const webpack = require('webpack');
 var webpackBaseConfig = {
     entry: {
-        "feeopen_web":"./src/index",
-        "feeopen_web.duobao":"./src/business/feeopen.web.duobao"
+        "feopen_web":"./src/index",
+        "feopen_web.duobao":"./src/business/feopen.web.duobao"
     },
     output: {
         path: path.resolve(__dirname, "../dist"),
         publicPath: '/',
         filename: "[name].min.js",
-        library: "feeopen_web",
+        library: "feopen_web",
         libraryTarget: "umd"
     },
     plugins: [
