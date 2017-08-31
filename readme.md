@@ -77,7 +77,7 @@ feopen_web.open(...);
 feedown_web.download(...);
 ```
 
-# [Document](../tree/master/wikis)  
+# [Document](../../wikis)  
 # 唤醒知识
 android + chrome: schema/intent 都能够手动唤醒：
 
