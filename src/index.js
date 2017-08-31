@@ -86,10 +86,10 @@ function feOpenWeb(schema, intentData, universalUrl, downloadUrl, appFlag, callb
         var _this = this;
         window.addEventListener('click', function(e) {
             var targetElement = e.target;
-            if (targetElement.classList.contains('feOpen')) {
+            if (targetElement.classList.contains('feopen')) {
                 _this.open();
             }
-            if (targetElement.classList.contains('feOpen-download')) {
+            if (targetElement.classList.contains('feopen-download')) {
                 _this.download();
             }
         }, false);

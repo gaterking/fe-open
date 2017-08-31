@@ -77,7 +77,13 @@ feopen_web.open(...);
 feedown_web.download(...);
 ```
 
-# [Document](https://git.mail.netease.com/gzliruixi/fe-open/wikis/home)  
+# [Document](https://git.mail.netease.com/gzliruixi/fe-open/wikis/home)
+自动唤醒：
+1. .start(true)
+2. URL query string方式,?auto=1/?auto=true
+按钮事件监听
+默认监听.feopen(打开)和.feopen-download(下载) 
+
 # 唤醒知识
 android + chrome: schema/intent 都能够手动唤醒：
 
