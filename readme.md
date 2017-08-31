@@ -77,7 +77,7 @@ feopen_web.open(...);
 feedown_web.download(...);
 ```
 
-# [Document](https://github.com/gaterking/webwakeup/wiki)  
+# [Document](/wikis)  
 # 唤醒知识
 android + chrome: schema/intent 都能够手动唤醒：
 
