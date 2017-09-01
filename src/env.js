@@ -19,7 +19,11 @@ var env = {
             browserMVer: uap.browser.mver?uap.browser.mver:0, //浏览器主版本
             isWeChat: uap.browser.name? uap.browser.name==='WeChat':false,
             isChrome:  uap.browser.name? uap.browser.name==='Chrome':false,
-            isMIUI:  uap.browser.name? uap.browser.name==='MIUI Browser':false
+            isMIUI:  uap.browser.name? uap.browser.name==='MIUI Browser':false,
+            isWeibo: uap.browser.name? uap.browser.name==='Weibo':false,
+            isUC: uap.browser.name? uap.browser.name==='UCBrowser':false,
+            isQQ: uap.browser.name? uap.browser.name==='QQBrowser':false,
+            isLieBao: uap.browser.name? uap.browser.name==='LieBaoFast':false,
         };
         return _env;
     }

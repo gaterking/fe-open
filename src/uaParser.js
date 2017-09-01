@@ -17,20 +17,24 @@ var regexes = {
             [NAME, 'UCBrowser'], VERSION
         ],
         [
-
+            /(weibo)__([\d\.]+)/i //weibo
+        ],
+        [
+            [NAME, 'Weibo'], VERSION
+        ],
+        [
             /(micromessenger)\/([\w\.]+)/i // WeChat
         ],
         [
             [NAME, 'WeChat'], VERSION
         ],
         [
-
             /(QQ)\/([\d\.]+)/i // QQ, aka ShouQ
         ],
         [NAME, VERSION],
         [
 
-            /m?(qqbrowser)[\/\s]?([\w\.]+)/i // QQBrowser
+            /m?(qqbrowser|liebaofast)[\/\s]?([\w\.]+)/i // QQBrowser、leibao
         ],
         [NAME, VERSION],
         [
@@ -63,7 +67,6 @@ var regexes = {
             [NAME, /(.+(?:g|us))(.+)/, '$1 $2'], VERSION
         ],
         [ // Oculus / Samsung Browser
-
             /android.+version\/([\w\.]+)\s+(?:mobile\s?safari|safari)*/i // Android Browser
         ],
         [VERSION, [NAME, 'Android Browser']],

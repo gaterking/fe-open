@@ -21,7 +21,7 @@ var openFormat = require('./openFormat').openFormat;
  * @param {string} intentData.category -
  * @param {string} intentData.component -
  * @param {string} intentData.fallbackUrl  -
- * @param {string} universalUrl - unitersal地址
+ * @param {string|string[]} deepLink， - deepLink，{string | string[]} - string,IOS/Android 使用相同的deeplink，Array [0]=IOS Universal,[1]=Android APP Link，如果某项为空，则该平台不使用deep link
  * @param {string | string[]} downloadUrl - 下载地址，如果是数组，[IOS地址, Android地址]，如果是字符串，则为统一下载页面
  * @param {string | function} appFlag - app UA判断标识
  * @param {object} callback - 回调对象
@@ -31,14 +31,15 @@ var openFormat = require('./openFormat').openFormat;
  * @param {wakeupCallback} callback.onFail  -
  * @param {wakeupCallback} callback.onWeChat -当前环境是微信
  */
-function feOpenWeb(schema, intentData, universalUrl, downloadUrl, appFlag, callback) {
-    this.version="0.1.1";
-    var urls = openFormat(schema, downloadUrl, intentData, universalUrl);
+function feOpenWeb(schema, intentData, deepLink, downloadUrl, appFlag, callback) {
+    this.version="0.1.4";
+    var urls = openFormat(schema, downloadUrl, intentData, deepLink);
     var config = {
         isApp: false,
         autoOpen: false, //是否自动打开
         schema: urls.schema,
         universalUrl: urls.universalUrl, //ios 9 universal url
+        appLink: urls.appLink, //android 6 app link
         intent: urls.intent, //android intent地址
         downloadUrl: urls.downloadUrl, //下载地址
         callback: {
@@ -56,8 +57,11 @@ function feOpenWeb(schema, intentData, universalUrl, downloadUrl, appFlag, callb
         //解析url query，生成配置
         var isAutoOpen = getUrlParameter('auto');
         isAutoOpen = isAutoOpen === '' ? '' : (isAutoOpen === 'true' || isAutoOpen === '1') ? true : false;
+        var isDebug = getUrlParameter('debug');
+        isDebug = isDebug === '' ? '' : (isDebug === 'true' || isDebug === '1') ? true : false;
         return {
-            auto: isAutoOpen
+            auto: isAutoOpen,
+            debug:isDebug
         };
     };
 
@@ -98,6 +102,7 @@ function feOpenWeb(schema, intentData, universalUrl, downloadUrl, appFlag, callb
     function _init(config) {
         var queryConfig = _parseUrlQueryConfig();
         this.config.autoOpen = queryConfig.auto && typeof queryConfig.auto === 'boolean' ? queryConfig.auto : config.autoOpen;
+        this.config.debug = queryConfig.debug && typeof queryConfig.debug === 'boolean' ? queryConfig.debug : false;
         this.config.isApp = _isAPP();
         /*arguments.callee.prototype.constructor.prototype.area(); //子类里调用父方法area
         arguments.callee.prototype.area();//子类里调用重载方法area*/
@@ -108,8 +113,8 @@ function feOpenWeb(schema, intentData, universalUrl, downloadUrl, appFlag, callb
 feOpenWeb.prototype = Object.create(feOpen.prototype);
 feOpenWeb.prototype.constructor = feOpenWeb;
 
-function _init(schema, intentData, universalUrl, downloadUrl, appFlag, callback) {
-    return new feOpenWeb(schema, intentData, universalUrl, downloadUrl, appFlag, callback);
+function _init(schema, intentData, deepLink, downloadUrl, appFlag, callback) {
+    return new feOpenWeb(schema, intentData, deepLink, downloadUrl, appFlag, callback);
 }
 /**
  * 初始化feOpenWeb，new feOpenWeb

@@ -1,4 +1,5 @@
 var env = require('./env');
+var wakeupMethods = require('./wakeupMethods');
 /**
  * feOpen 唤醒库核心基类，对各个移动端环境进行兼容性处理
  * @class
@@ -66,11 +67,21 @@ function feOpen(config, ua) {
             window.location.href = (url || this.config.downloadUrl); //APP下载页
         }
     }
-
+    /**
+     * 调试日志
+     * @private
+     * @param {string} str -需要输出的日志
+     */
+    this._debugLog = function(str) {
+        if (this.config.debug) {
+            console.log(str);
+        }
+    };
     /**
      * 手动执行唤醒
      * @param {object} urls -唤醒参数，指定后本次唤醒替换初始化配置
-     * @param {string} urls.universalUrl
+     * @param {string} urls.universalUrl - IOS 9 Universal Url
+     * @param {string} urls.appLink - Android 6 app link
      * @param {string} urls.intent
      * @param {string} urls.schema
      */
@@ -81,24 +92,46 @@ function feOpen(config, ua) {
             this.config.callback.onStart();
         }
         var universalUrl = urls && urls.universalUrl || this.config.universalUrl;
+        var appLink = urls && urls.appLink || this.config.appLink;
         var intent = urls && urls.intent || this.config.intent;
         var schema = urls && urls.schema || this.config.schema;
+        this._debugLog(universalUrl);
+        this._debugLog(appLink);
+        this._debugLog(intent);
+        this._debugLog(schema);
         if (currentEnv.isWeChat) {
             //微信端，不进行open，直接回调
+            this._debugLog('WeChat');
             if (this.config.callback.onWeChat && typeof this.config.callback.onWeChat === 'function') {
                 this.config.callback.onWeChat();
             }
             return false;
         }
-        if (currentEnv.isIOS && currentEnv.osMVer >= 9 && universalUrl) {
+        var isWakeUpIng = false;
+        
+        var method = wakeupMethods.getMethod(currentEnv, universalUrl !== '', appLink !== '', intent);
+        if (method === 'u') {
+            this._debugLog('universal url');
             openByLocation.call(this, universalUrl);
-        } else if (currentEnv.isAndroid && currentEnv.isChrome && intent) {
-            //Android + Chrome = intent
-            //或者直接使用schema，通过手动href点击触发
-            //在Android Chrome浏览器中，版本号在chrome 25+的版本不在支持通过传统schema的方法唤醒App，比如通过设置window.location = "xxxx://login"将无法唤醒本地客户端。需要通过Android Intent 来唤醒APP
+            isWakeUpIng = true;
+        }
+
+        if (method === 'a') {
+            this._debugLog('app link');
+            openByLocation.call(this, appLink);
+            isWakeUpIng = true;
+        }
+
+        if (method === 'i') {
+            //Android 优先使用intent，除了UC、QQ、猎豹
+            this._debugLog('intent');
             openByLocation.call(this, intent);
-        } else {
+            isWakeUpIng = true;
+        }
+        if (!isWakeUpIng) {
             //openByLocation.call(this, schema);
+            alert('schema');
+            this._debugLog('schema');
             openByIframe.call(this, schema);
         }
     };
@@ -109,7 +142,7 @@ function feOpen(config, ua) {
      * @param {boolean} open -是否自动打开，如果未配置，则自动读取url参数的auto属性
      */
     this.start = function(open) {
-        if (open || (open!==false && this.config.autoOpen)) {
+        if (open || (open !== false && this.config.autoOpen)) {
             this.open();
         }
     };
@@ -134,7 +167,7 @@ function feOpen(config, ua) {
  * @property {boolean} isApp 是否内嵌在APP，如果为true，会自动忽略open操作
  * @property {boolean} autoOpen 是否尝试自动打开
  * @property {string} schema 完整的唤醒schema
- * @property {string|Array} downloadUrl 下载地址，如果是数组，[IOS地址, Android地址]，如果是字符串，则为统一下载页面
+ * @property {string|string[]} downloadUrl 下载地址，如果是数组，[IOS地址, Android地址]，如果是字符串，则为统一下载页面
  * @property {object} callback - 回调对象
  * @property {wakeupCallback} callback.onStart -
  * @property {wakeupCallback} callback.onEnd -
@@ -146,7 +179,8 @@ feOpen.prototype.config = {
     isApp: false,
     autoOpen: false, //是否自动打开
     schema: '',
-    universalUrl: '', //ios 9 universal url
+    universalUrl: '', //IOS Universal url
+    appLink: '', //Android APP Link
     intent: '', //android intent地址
     downloadUrl: [], //下载地址，如果是数组，[IOS地址, Android地址]，如果是字符串，则为统一下载页面
     callback: {
@@ -154,7 +188,8 @@ feOpen.prototype.config = {
         onEnd: function() {},
         onSuccess: function() {},
         onFail: function() {}
-    }
+    },
+    debug: false
 };
 
 /**

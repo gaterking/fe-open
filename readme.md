@@ -1,13 +1,13 @@
 # 项目介绍
- fee-open是一个用于H5唤醒移动APP的库，通过一些配置，自动识别H5执行的机型、浏览器环境，调用适配的方式唤醒原生APP，目前支持一下几种调用方式：
+ fe-open是一个用于H5唤醒移动APP的库，通过一些配置，自动识别H5执行的机型、浏览器环境，调用适配的方式唤醒原生APP，目前支持一下几种调用方式：
 
 
 | 调用方式|系统|浏览器|优先级(1最大)
 |:----------|:----------:|:----------:|-----------|
 | schema      | ALL | ALL| 3 |
-| intent      | Android | chrome | 2 |
+| intent      | Android | 非QQ、UC、猎豹 | 2 |
 | universal link | IOS >= 9 | Safari| 1 |
-| deep link|||/|
+| app link| Android >= 6| ALL |1|
 
 
 #目录结构
@@ -21,14 +21,14 @@
 
  
 # 安装方式
-1. npm install fee-open
+1. npm install fe-open
 2. umd方式引用npm包
 3. 或直接umd引用dist对应的js
 
 # 使用方式
 ## CommonJS/ES Module/AMD
 ```javascript
-var feOpenWeb = require('fee-open');
+var feOpenWeb = require('fe-open');
 feOpenWeb.init({
             protocal: 'duobaohkg://',
             value: schema
@@ -74,7 +74,7 @@ feopen_web.start();
 //手动尝试打开APP
 feopen_web.open(...);
 //手动下载APP
-feedown_web.download(...);
+feopen_web.download(...);
 ```
 
 # [Document](https://git.mail.netease.com/gzliruixi/fe-open/wikis/home)

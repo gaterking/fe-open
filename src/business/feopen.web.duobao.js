@@ -23,7 +23,7 @@ function feOpenDuobao(moduleTarget) {
             protocal: 'duobaohkg://',
             value: schema
         }, {
-            host: '//duobao',
+            host: 'duobao',
             package: 'com.henkuaigou.kuaiduobao',
             schema: schema,
             fallbackUrl: ''

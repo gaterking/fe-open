@@ -98,3 +98,41 @@ test('ua browser Chrome',()=>{
         expect(uap.browser.mver).toBe(u[1]);
     });
 });
+
+test('ua Weibo',()=>{
+    var ua = [
+        ["Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.3.8 (KHTML, like Gecko) Mobile/14G60 Weibo (iPhone7,2__weibo__7.8.1__iphone__os10.3.3)",7,'7.8.1']
+    ]
+    let uap;
+    ua.forEach(u=>{
+        uap = new uaParser(u[0]);
+        expect(uap.browser.name).toBe('Weibo');
+    });
+});
+
+test('ua WeChat',()=>{
+    var ua = [
+        ["Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.3.8 (KHTML, like Gecko) Mobile/14G60 MicroMessenger/6.5.14 NetType/WIFI Language/zh_CN",6,'6.5.14']
+    ]
+    let uap;
+    ua.forEach(u=>{
+        uap = new uaParser(u[0]);
+        expect(uap.browser.name).toBe('WeChat');
+        expect(uap.browser.ver).toBe(u[2]);
+        expect(uap.browser.mver).toBe(u[1]);
+    });
+});
+
+test('ua samsung browser',()=>{
+    var ua = [
+        ["Mozilla/5.0 (Linux; Android 6.0.1; SAMSUNG SM-N9108V Build/MMB29M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/4.0 Chrome/44.0.2403.133 Mobile Safari/537.36",4,'4.0']
+    ]
+    let uap;
+    ua.forEach(u=>{
+        debugger;
+        uap = new uaParser(u[0]);
+        expect(uap.browser.name).toBe('Samsung Browser');
+        expect(uap.browser.ver).toBe(u[2]);
+        expect(uap.browser.mver).toBe(u[1]);
+    });
+});
