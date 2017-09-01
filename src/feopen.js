@@ -1,6 +1,31 @@
 var env = require('./env');
 var wakeupMethods = require('./wakeupMethods');
 /**
+ * 检查iframe方式是否成功唤醒
+ * 
+ * @param {callback} cb 
+ */
+function checkOpen(cb){
+    var _clickTime = +(new Date());
+    function check(elsTime) {
+        if ( elsTime > 3000 || document.hidden || document.webkitHidden) {
+            cb(1);
+        } else {
+            cb(0);
+        }
+    }
+    //启动间隔20ms运行的定时器，并检测累计消耗时间是否超过3000ms，超过则结束
+    var _count = 0, intHandle;
+    intHandle = setInterval(function(){
+        _count++;        
+        var elsTime = +(new Date()) - _clickTime;
+        if (_count>=100 || elsTime > 3000 ) {
+            clearInterval(intHandle);
+            check(elsTime);
+        }
+    }, 20);
+}
+/**
  * feOpen 唤醒库核心基类，对各个移动端环境进行兼容性处理
  * @class
  */
@@ -14,9 +39,8 @@ function feOpen(config, ua) {
             ifa.src = url; //APP的schema协议
             ifa.style.display = 'none';
             document.body.appendChild(ifa);
-            setTimeout(function() {
-                document.body.removeChild(ifa);
-                if (Date.now() - openStartTime <= 2500) {
+            checkOpen(function(opened){
+                if (!opened) {
                     //唤醒失败。如果唤醒成功，页面会转到后台，web的计时器会停止，返回后，时间会超过2500ms
                     if (_this.config.callback.onFail && typeof _this.config.callback.onFail === 'function') {
                         _this.config.callback.onFail();
@@ -30,6 +54,9 @@ function feOpen(config, ua) {
                 if (_this.config.callback.onEnd && typeof _this.config.callback.onEnd === 'function') {
                     _this.config.callback.onEnd();
                 }
+            });
+            setTimeout(function() {
+                document.body.removeChild(ifa);
             }, 2000);
         }
     }
@@ -130,7 +157,6 @@ function feOpen(config, ua) {
         }
         if (!isWakeUpIng) {
             //openByLocation.call(this, schema);
-            alert('schema');
             this._debugLog('schema');
             openByIframe.call(this, schema);
         }
@@ -171,8 +197,8 @@ function feOpen(config, ua) {
  * @property {object} callback - 回调对象
  * @property {wakeupCallback} callback.onStart -
  * @property {wakeupCallback} callback.onEnd -
- * @property {wakeupCallback} callback.onSuccess -
- * @property {wakeupCallback} callback.onFail  -
+ * @property {wakeupCallback} callback.onSuccess -该回调在QQ、UC等iframe打开时会以为弹窗而导致失效
+ * @property {wakeupCallback} callback.onFail  - 参考onSuccess
  * @property {wakeupCallback} callback.onWeChat  -
  */
 feOpen.prototype.config = {

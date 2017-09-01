@@ -27,8 +27,8 @@ var openFormat = require('./openFormat').openFormat;
  * @param {object} callback - 回调对象
  * @param {wakeupCallback} callback.onStart -
  * @param {wakeupCallback} callback.onEnd -
- * @param {wakeupCallback} callback.onSuccess -
- * @param {wakeupCallback} callback.onFail  -
+ * @param {wakeupCallback} callback.onSuccess -该回调在QQ、UC等iframe打开时会以为弹窗而导致失效
+ * @param {wakeupCallback} callback.onFail  - 参考onSuccess
  * @param {wakeupCallback} callback.onWeChat -当前环境是微信
  */
 function feOpenWeb(schema, intentData, deepLink, downloadUrl, appFlag, callback) {
