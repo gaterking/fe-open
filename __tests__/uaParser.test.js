@@ -143,7 +143,6 @@ test('ua EUI browser',()=>{
     ];
     let uap;
     ua.forEach(u=>{
-        debugger;
         uap = new uaParser(u[0]);
         expect(uap.browser.name).toBe('EUI Browser');
         expect(uap.browser.ver).toBe(u[2]);

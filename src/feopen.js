@@ -157,7 +157,6 @@ function feOpen(config, ua) {
         if (!isWakeUpIng) {
             //openByLocation.call(this, schema);
             this._debugLog('schema');
-            alert(schema);
             openByIframe.call(this, schema);
         }
     };
