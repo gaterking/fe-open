@@ -150,7 +150,6 @@ function feOpen(config, ua) {
         }
 
         if (method === 'i') {
-            //Android 优先使用intent，除了UC、QQ、猎豹
             this._debugLog('intent');
             openByLocation.call(this, intent);
             isWakeUpIng = true;
@@ -158,6 +157,7 @@ function feOpen(config, ua) {
         if (!isWakeUpIng) {
             //openByLocation.call(this, schema);
             this._debugLog('schema');
+            alert(schema);
             openByIframe.call(this, schema);
         }
     };

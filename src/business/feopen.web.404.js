@@ -34,7 +34,7 @@ function feOpen404(moduleTarget, protocol) {
                 schema: 'oldbirdlottery://' + schema,
                 fallbackUrl: 'https://baidu.com'
             },
-            '', //'https://twitter.com',
+            '',
             donwloadUrl,
             'duobaohkg', {
                 onStart: function() {

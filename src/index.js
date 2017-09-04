@@ -27,12 +27,12 @@ var openFormat = require('./openFormat').openFormat;
  * @param {object} callback - 回调对象
  * @param {wakeupCallback} callback.onStart -
  * @param {wakeupCallback} callback.onEnd -
- * @param {wakeupCallback} callback.onSuccess -该回调在QQ、UC等iframe打开时会以为弹窗而导致失效
+ * @param {wakeupCallback} callback.onSuccess -该回调在QQ、UC等iframe打开时会因为弹窗而导致失效
  * @param {wakeupCallback} callback.onFail  - 参考onSuccess
  * @param {wakeupCallback} callback.onWeChat -当前环境是微信
  */
 function feOpenWeb(schema, intentData, deepLink, downloadUrl, appFlag, callback) {
-    this.version="0.1.4";
+    this.version = VERSION;
     var urls = openFormat(schema, downloadUrl, intentData, deepLink);
     var config = {
         isApp: false,
@@ -47,7 +47,7 @@ function feOpenWeb(schema, intentData, deepLink, downloadUrl, appFlag, callback)
             onEnd: callback && callback.onEnd ? callback.onEnd : null,
             onSuccess: callback && callback.onSuccess ? callback.onSuccess : null,
             onFail: callback && callback.onFail ? callback.onFail : null,
-            onWeChat:callback && callback.onWeChat ? callback.onWeChat : null,
+            onWeChat: callback && callback.onWeChat ? callback.onWeChat : null,
         }
     };
 
@@ -61,7 +61,7 @@ function feOpenWeb(schema, intentData, deepLink, downloadUrl, appFlag, callback)
         isDebug = isDebug === '' ? '' : (isDebug === 'true' || isDebug === '1') ? true : false;
         return {
             auto: isAutoOpen,
-            debug:isDebug
+            debug: isDebug
         };
     };
 

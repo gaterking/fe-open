@@ -34,7 +34,7 @@ var regexes = {
         [NAME, VERSION],
         [
 
-            /m?(qqbrowser|liebaofast)[\/\s]?([\w\.]+)/i // QQBrowser、leibao
+            /m?(qqbrowser|liebaofast|EUI Browser|OppoBrowser)[\/\s]?([\w\.]+)/i // QQBrowser、leibao
         ],
         [NAME, VERSION],
         [

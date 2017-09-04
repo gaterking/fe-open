@@ -28,7 +28,7 @@ function feOpenDuobao(moduleTarget) {
             schema: schema,
             fallbackUrl: ''
         }, 
-        'https://twitter.com',
+        '',//https://twitter.com',
         donwloadUrl, 
         'duobaohkg', 
         {

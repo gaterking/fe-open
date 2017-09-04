@@ -24,6 +24,7 @@ var env = {
             isUC: uap.browser.name? uap.browser.name==='UCBrowser':false,
             isQQ: uap.browser.name? uap.browser.name==='QQBrowser':false,
             isLieBao: uap.browser.name? uap.browser.name==='LieBaoFast':false,
+            isSamsung:uap.browser.name? uap.browser.name==='Samsung Browser':false
         };
         return _env;
     }

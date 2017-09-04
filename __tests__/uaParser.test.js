@@ -129,9 +129,37 @@ test('ua samsung browser',()=>{
     ]
     let uap;
     ua.forEach(u=>{
-        debugger;
         uap = new uaParser(u[0]);
         expect(uap.browser.name).toBe('Samsung Browser');
+        expect(uap.browser.ver).toBe(u[2]);
+        expect(uap.browser.mver).toBe(u[1]);
+    });
+});
+
+test('ua EUI browser',()=>{
+    //乐视系统浏览器
+    var ua = [
+        ["Mozilla/5.0 (Linux; U; Android 5.0; zh-cn; Letv X500 Build/DBXCNOP5500811172S) AppleWebKit/537.36 (KHTML, like Gecko)Version/4.0 Chrome/37.0.0.0 Mobile Safari/537.36 EUI Browser/1.0",1,"1.0"]
+    ];
+    let uap;
+    ua.forEach(u=>{
+        debugger;
+        uap = new uaParser(u[0]);
+        expect(uap.browser.name).toBe('EUI Browser');
+        expect(uap.browser.ver).toBe(u[2]);
+        expect(uap.browser.mver).toBe(u[1]);
+    });
+});
+
+test('ua OPPO browser',()=>{
+    //OPPO系统浏览器
+    var ua = [
+        ["Mozilla/5.0 (Linux; U; Android 6.0.1; zh-cn; OPPO A57 Build/MMB29M) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.134 Mobile Safari/537.36 OppoBrowser/4.3.8.2",4,"4.3.8.2"]
+    ];
+    let uap;
+    ua.forEach(u=>{
+        uap = new uaParser(u[0]);
+        expect(uap.browser.name).toBe('OppoBrowser');
         expect(uap.browser.ver).toBe(u[2]);
         expect(uap.browser.mver).toBe(u[1]);
     });

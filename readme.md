@@ -85,6 +85,9 @@ feopen_web.download(...);
 默认监听.feopen(打开)和.feopen-download(下载) 
 
 # 唤醒知识
+universal link
+在IOS safari中，iframe src已经不再支持，如果使用location方式，会自动跳转，如果没有安装，则会跳到该URL，需要能够有效打开，否则会404或500
+
 android + chrome: schema/intent 都能够手动唤醒：
 
 1.设置url href,手动点击后唤醒 
