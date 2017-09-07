@@ -1,6 +1,7 @@
 var getUrlParameter = require('./util').getUrlParameter;
 var feOpen = require('./feOpen');
 var openFormat = require('./openFormat').openFormat;
+var version = require("../package.json").version;
 /**
  * 唤醒回调函数
  * @callback wakeupCallback
@@ -32,7 +33,7 @@ var openFormat = require('./openFormat').openFormat;
  * @param {wakeupCallback} callback.onWeChat -当前环境是微信
  */
 function feOpenWeb(schema, intentData, deepLink, downloadUrl, appFlag, callback) {
-    this.version = VERSION;
+    this.version = typeof VERSION==='undefined'?version:VERSION;
     var urls = openFormat(schema, downloadUrl, intentData, deepLink);
     var config = {
         isApp: false,
