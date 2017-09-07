@@ -5,7 +5,7 @@ function feOpen404(openOption, isAlpha) {
     var defaultOption = Object.assign({
         protocal: 'oldbirdlottery',
         schema: '',
-        deepLink: 'https://a.iwincaipiao.com/h1',
+        deepLink: ['https://a.iwincaipiao.com/h1'],
         downloadUrl: 'https://a.iwincaipiao.com/h1',
         fallbackUrl: 'https://a.iwincaipiao.com/h1',
         appFlag: 'ycp',

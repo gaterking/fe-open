@@ -1,3 +1,4 @@
+require('./polyfill');
 var getUrlParameter = require('./util').getUrlParameter;
 var feOpen = require('./feOpen');
 var openFormat = require('./openFormat').openFormat;

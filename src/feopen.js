@@ -135,7 +135,6 @@ function feOpen(config, ua) {
             return false;
         }
         var isWakeUpIng = false;
-        
         var method = wakeupMethods.getMethod(currentEnv, universalUrl !== '', appLink !== '', intent);
         if (method === 'u') {
             this._debugLog('universal url');
