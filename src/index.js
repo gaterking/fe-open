@@ -31,10 +31,10 @@ var version = require("../package.json").version;
  * @param {wakeupCallback} callback.onEnd -
  * @param {wakeupCallback} callback.onSuccess -该回调在QQ、UC等iframe打开时会因为弹窗而导致失效
  * @param {wakeupCallback} callback.onFail  - 参考onSuccess
- * @param {wakeupCallback} callback.onWeChat -当前环境是微信
+ * @param {wakeupCallback} callback.onNotSupport -当前环境不支持
  */
 function feOpenWeb(schema, intentData, deepLink, downloadUrl, appFlag, callback) {
-    this.version = typeof VERSION==='undefined'?version:VERSION;
+    this.version = version;
     var urls = openFormat(schema, downloadUrl, intentData, deepLink);
     var config = {
         isApp: false,
@@ -43,17 +43,19 @@ function feOpenWeb(schema, intentData, deepLink, downloadUrl, appFlag, callback)
         universalUrl: urls.universalUrl, //ios 9 universal url
         appLink: urls.appLink, //android 6 app link
         intent: urls.intent, //android intent地址
+        intentWithoutFallback: urls.intentWithoutFallback,
         downloadUrl: urls.downloadUrl, //下载地址
         callback: {
             onStart: callback && callback.onStart ? callback.onStart : null,
             onEnd: callback && callback.onEnd ? callback.onEnd : null,
             onSuccess: callback && callback.onSuccess ? callback.onSuccess : null,
             onFail: callback && callback.onFail ? callback.onFail : null,
-            onWeChat: callback && callback.onWeChat ? callback.onWeChat : null,
+            onNotSupport: callback && callback.onNotSupport ? callback.onNotSupport : null,
         }
     };
 
     feOpen.call(this, config);
+    this.config.tlink = urls.tlink; //同步地址，直接使用schema方式打开;
 
     function _parseUrlQueryConfig() {
         //解析url query，生成配置
@@ -101,6 +103,8 @@ function feOpenWeb(schema, intentData, deepLink, downloadUrl, appFlag, callback)
         }, false);
     }
 
+
+
     function _init(config) {
         var queryConfig = _parseUrlQueryConfig();
         this.config.autoOpen = queryConfig.auto && typeof queryConfig.auto === 'boolean' ? queryConfig.auto : config.autoOpen;
@@ -113,6 +117,25 @@ function feOpenWeb(schema, intentData, deepLink, downloadUrl, appFlag, callback)
     _init.call(this, config);
 }
 feOpenWeb.prototype = Object.create(feOpen.prototype);
+feOpenWeb.prototype.open = function(urls) {
+    if (!urls && this.config.tlink) {
+        //指定了tlink，优先使用tlink打开
+        urls = {
+            schema: this.config.tlink
+        };
+    }
+    feOpen.prototype.open.apply(this, [urls]);
+};
+feOpenWeb.prototype.openAuto = function() {
+    var urls = {};
+    if (this.config.tlink) {
+        //指定了tlink，优先使用tlink打开
+        urls = {
+            schema: this.config.tlink
+        };
+    }
+    feOpen.prototype.openAuto.apply(this, [urls]);
+};
 feOpenWeb.prototype.constructor = feOpenWeb;
 
 function _init(schema, intentData, deepLink, downloadUrl, appFlag, callback) {

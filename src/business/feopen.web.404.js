@@ -1,6 +1,10 @@
 var getUrlParameter = require('../util').getUrlParameter;
 var feOpenWeb = require('../../src/index');
-
+var browserOpenTips = require('./browserOpenTips');
+var f5jpg = require('./img/f5.jpg');
+var f6jpg = require('./img/f6.jpg');
+var f7jpg = require('./img/f7.jpg');
+var f52weibojpg = require('./img/f52_weibo.jpg');
 function feOpen404(openOption, isAlpha) {
     var defaultOption = Object.assign({
         protocal: 'oldbirdlottery',
@@ -8,11 +12,31 @@ function feOpen404(openOption, isAlpha) {
         deepLink: ['https://a.iwincaipiao.com/h1'],
         downloadUrl: 'https://a.iwincaipiao.com/h1',
         fallbackUrl: 'https://a.iwincaipiao.com/h1',
-        appFlag: 'ycp',
-        onWeChat: function() {
-            document.getElementById('wechat').style.dosplay = 'block';
-        }
+        appFlag: 'ycp'
     }, openOption);
+    defaultOption.onNotSupport = function(action, browser) {
+        var wakeupTmplDom = document.getElementById('feopen-tmpl-wakeup');
+        var downloadTmplDom = document.getElementById('feopen-tmpl-download');
+        switch (action) {
+            case 'wakeup':
+            case 'download':
+                if (wakeupTmplDom) {
+                    browserOpenTips.open('#feopen-tmpl-wakeup');
+                } else if (downloadTmplDom) {
+                    browserOpenTips.open('#feopen-tmpl-download');
+                } else {
+                    var img_0 = (browser === 'WeChat' ? f5jpg : (browser === 'Weibo') ? f52weibojpg : '');
+                    browserOpenTips.open('<div class="feopen-close">' +
+                        img_0 === '' ? '' : '<img src="' + img_0 + '" style="width:100%;display: block;" />' +
+                        '<img src="' + f6jpg + '" style="width:100%;display: block;"/>' +
+                        '<img src="' + f7jpg + '" style="width:100%;display: block;"/></div>');
+                }
+                break;
+        }
+    };
+    defaultOption.onFail = function() {
+        openWeb.download();
+    };
     var openWeb;
 
     function _init() {
@@ -31,7 +55,8 @@ function feOpen404(openOption, isAlpha) {
             defaultOption.deepLink,
             defaultOption.downloadUrl,
             defaultOption.appFlag, {
-                onWeChat: defaultOption.onWeChat
+                onNotSupport: defaultOption.onNotSupport,
+                onFail: defaultOption.onFail
             }
         );
         openWeb.start();

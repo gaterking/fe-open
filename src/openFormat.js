@@ -41,12 +41,14 @@ function _openFormat(schema, downloadUrl, intentData, deepLink) {
     deepLink = deepLink ? deepLink : '';
     var schemaValue = schema.value || getUrlParameter('schema');
     var urls = {
+        tlink: '',
         schema: '',
         universalUrl: '',
-        appLink:'',
+        appLink: '',
         intent: '',
         downloadUrl: ''
     };
+    urls.tlink = (typeof feopenConfig !== 'undefined' && feopenConfig.tlink) ? feopenConfig.tlink : ''; //页面同步变量，直接读取window.feopenConfig.tlink属性
     urls.schema = schema.protocal + encodeURIComponent(schemaValue);
     var intents = [];
     if (intentData) {
@@ -59,9 +61,10 @@ function _openFormat(schema, downloadUrl, intentData, deepLink) {
         intentData.fallbackUrl ? intents.push('S.browser_fallback_url=' + encodeURIComponent(intentData.fallbackUrl)) : null;
         intents.push('end')
         urls.intent = intents.join(';');
+        urls.intentWithoutFallback = urls.intent.replace(/\;S\.browser_fallback_url=((?!\;).)*/,'');
     }
     urls.downloadUrl = downloadUrl ? downloadUrl : '';
-    var dlArray= _formatDeepLink(deepLink);
+    var dlArray = _formatDeepLink(deepLink);
     urls.universalUrl = dlArray && dlArray[0] ? dlArray[0] : '';
     urls.appLink = dlArray && dlArray[1] ? dlArray[1] : '';
     return urls;

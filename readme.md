@@ -4,11 +4,21 @@
 
 | 调用方式|系统|浏览器|优先级(1最大)
 |:----------|:----------:|:----------:|-----------|
-| schema      | ALL | ALL| 3 |
-| intent      | Android | 非QQ、UC、猎豹 | 2 |
+| schema | ALL | ALL| 3 |
+| intent | Android | Chrome | 2 |
 | universal link | IOS >= 9 | Safari| 1 |
 | app link| Android >= 6| ALL |1|
+intent在不同机型的浏览器存在兼容性问题，例如在MIUI、Samsung无法触发browser_fallback_url
 
+自动唤醒：唤醒失败后不做任何操作，保持在当前页面
+~~universal link/deep link~~
+intent
+schema
+
+手动唤醒：点击按钮触发时间唤醒，唤醒失败后跳转到下载页面，如果是WeChat、Weibo，弹出提示框
+universal link/deep link
+intent
+schema
 
 #目录结构
 
@@ -17,7 +27,8 @@
 >>index.js	--入口，包括唤醒地址生成、url默认参数加载、按钮事件  
 >>feopen.js	--唤醒库，包括环境检测、调用方式  
 >> business  与具体业务系统强相关的js目录，业务系统应该直接调用的js，需要按需调用统计、加载相关参数、统一的schema，并对外开放极少量的接口  
->>>feopen.web.duobao.js  
+>>>feopen.web.duobao.js 
+>>>feopen.web.404.js
 
  
 # 安装方式
@@ -76,6 +87,11 @@ feopen_web.open(...);
 //手动下载APP
 feopen_web.download(...);
 ```
+
+# 业务库
+目录：/src/business/ 针对各业务系统的脚本，封装了APP的open参数
+引用方式：CommonJS/ES Module/AMD/Script
+使用方法：参考 /sample 的案例
 
 # [Document](https://git.mail.netease.com/gzliruixi/fe-open/wikis/home)
 自动唤醒：

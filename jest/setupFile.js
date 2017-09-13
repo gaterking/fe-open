@@ -25,5 +25,10 @@ Object.defineProperty(navigator, "userAgent", {
 	value: ""
 });
 
+Object.defineProperty(document, "hidden", {
+	writable: true,
+	value: ""
+});
+
 const locationReplaceFn = jest.fn();
 location.replace = locationReplaceFn;
