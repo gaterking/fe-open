@@ -93,7 +93,7 @@ feopen_web.download(...);
 引用方式：CommonJS/ES Module/AMD/Script
 使用方法：参考 /sample 的案例
 
-# [Document](https://git.mail.netease.com/gzliruixi/fe-open/wikis/home)
+# [Document](https://git.mail.netease.com/frontend-library/fe-open/wikis/home)
 自动唤醒：
 1. .start(true)
 2. URL query string方式,?auto=1/?auto=true
