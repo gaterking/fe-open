@@ -132,7 +132,7 @@ function feOpen(config, ua) {
         }
     };
 
-    this._wakeupApp = function(openLinks, cb) {
+    this._wakeupApp = function(openLinks,isAutoOpen, cb) {
         if (this._currentEnv.isWeChat || this._currentEnv.isWeibo) {
             //微信端，不进行open，直接回调
             this._debugLog('WeChat');
@@ -147,7 +147,8 @@ function feOpen(config, ua) {
             return false;
         }
         var isWakeUpIng = false;
-        var method = wakeupMethods.getMethod(this._currentEnv, openLinks.universalUrl !== '', openLinks.appLink !== '', openLinks.intent);
+        var method = wakeupMethods.getMethod(this._currentEnv, openLinks.universalUrl !== '', openLinks.appLink !== '', openLinks.intent,isAutoOpen);
+
         if (method === 'u') {
             this._debugLog('universal url');
             this._openByLocation(openLinks.universalUrl);
@@ -247,7 +248,7 @@ feOpen.prototype.open = function(urls) {
         appLink: appLink,
         intent: intent,
         schema: schema
-    });
+    },false);
 };
 
 /**
@@ -264,7 +265,7 @@ feOpen.prototype.openAuto = function(urls) {
         appLink: '',
         intent: urls && urls.intent || this.config.intentWithoutFallback,
         schema: urls && urls.schema || this.config.schema
-    }, {
+    },true, {
         onFail: function(){},
         onNotSupport:function(action){}
     });

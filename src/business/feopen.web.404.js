@@ -1,10 +1,12 @@
 var getUrlParameter = require('../util').getUrlParameter;
 var feOpenWeb = require('../../src/index');
 var browserOpenTips = require('./browserOpenTips');
-var f5jpg = require('./img/f5.jpg');
-var f6jpg = require('./img/f6.jpg');
-var f7jpg = require('./img/f7.jpg');
-var f52weibojpg = require('./img/f52_weibo.jpg');
+
+var mimgSite = 'https://mimg.iwincaipiao.com/images/ld/';
+var f5jpg = mimgSite + 'popup_1_weixin.jpg'/*'./img/f5.jpg'*/;
+var f6jpg = mimgSite + 'popup_2.jpg'/*'./img/f6.jpg'*/;
+var f7jpg = mimgSite + 'popup_3.jpg'/*'./img/f7.jpg'*/;
+var f52weibojpg = mimgSite + 'popup_1_weibo.jpg';
 function feOpen404(openOption, isAlpha) {
     var defaultOption = Object.assign({
         protocal: 'oldbirdlottery',
@@ -12,7 +14,8 @@ function feOpen404(openOption, isAlpha) {
         deepLink: ['https://a.iwincaipiao.com/h1'],
         downloadUrl: 'https://a.iwincaipiao.com/h1',
         fallbackUrl: 'https://a.iwincaipiao.com/h1',
-        appFlag: 'ycp'
+        appFlag: 'ycp',
+        autoOpen:null
     }, openOption);
     defaultOption.onNotSupport = function(action, browser) {
         var wakeupTmplDom = document.getElementById('feopen-tmpl-wakeup');
@@ -59,7 +62,7 @@ function feOpen404(openOption, isAlpha) {
                 onFail: defaultOption.onFail
             }
         );
-        openWeb.start();
+        openWeb.start(defaultOption.autoOpen);//启动时自动打开
     }
 
     _init.call(this);

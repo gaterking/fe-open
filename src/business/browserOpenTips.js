@@ -20,12 +20,14 @@ function _open(contentHtml) {
     maskDiv.style.top = '0';
     maskDiv.style.bottom = '0';
     maskDiv.style.left = '0';
-    maskDiv.style.zIndex = '100';
+    maskDiv.style.zIndex = '1000';
 
     var contentDiv = document.createElement('div');
     contentDiv.className = "feopen_content";
     contentDiv.style.position = 'absolute';
-    contentDiv.style.zIndex = '101';
+    contentDiv.style.zIndex = '1001';
+    contentDiv.style.top = '0';
+    contentDiv.style.left = '0';
     var template = '<button class="feopen-close">Close</button>';
     if(contentHtml){
         if(/^#/.test(contentHtml)){

@@ -9,8 +9,8 @@ function feOpenDuobao(openOption) {
         downloadUrl: 'https://app.henkuaigou.com/applinks/download.htm',
         fallbackUrl: 'https://twitter.com',
         appFlag: 'duobaohkg',
-        onNotSupport: function() {
-            document.getElementById('wechat').style.dosplay = 'block';
+        onNotSupport: function(action, browser) {
+            alert(browser);
         },
         onFail: function() {
             //openWeb.download();
