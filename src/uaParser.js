@@ -203,7 +203,7 @@ function uaParser(uaStr) {
             var os = {};
             mapper.rgx.call(os, ua, regexes.os);
             this.os = os;
-            this.os.mver = os.ver ? Number.parseInt(os.ver.replace(/^(\d+).*/, '$1')) : 0;
+            this.os.mver = os.ver ? parseInt(os.ver.replace(/^(\d+).*/, '$1')) : 0;
         }
         return this.os;
     };
@@ -216,7 +216,7 @@ function uaParser(uaStr) {
             var browser = {};
             mapper.rgx.call(browser, ua, regexes.browser);
             this.browser = browser;
-            this.browser.mver = browser.ver ? Number.parseInt(browser.ver.replace(/^(\d+).*/, '$1')) : 0;
+            this.browser.mver = browser.ver ? parseInt(browser.ver.replace(/^(\d+).*/, '$1')) : 0;
             //this.browsbrowser.major = util.major(browser.version); // deprecated
         }
         return this.browser;
