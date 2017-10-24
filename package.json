@@ -1,6 +1,6 @@
 {
     "name": "fe-open",
-    "version": "0.1.15",
+    "version": "0.1.18",
     "description": "H5唤醒原生APP",
     "main": "src/index.js",
     "scripts": {

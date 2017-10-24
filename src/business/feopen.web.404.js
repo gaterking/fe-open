@@ -12,7 +12,7 @@ function feOpen404(openOption, isAlpha) {
         protocal: 'oldbirdlottery',
         schema: '',
         deepLink: ['https://a.iwincaipiao.com/h1'],
-        downloadUrl: 'https://a.iwincaipiao.com/h1',
+        downloadUrl: 'https://m.iwincaipiao.com/client?from=testfrom&template=1',
         fallbackUrl: 'https://a.iwincaipiao.com/h1',
         appFlag: 'ycp',
         autoOpen:null

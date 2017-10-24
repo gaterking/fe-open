@@ -63,9 +63,12 @@ function feOpenWeb(schema, intentData, deepLink, downloadUrl, appFlag, callback)
         isAutoOpen = isAutoOpen === '' ? '' : (isAutoOpen === 'true' || isAutoOpen === '1') ? true : false;
         var isDebug = getUrlParameter('debug');
         isDebug = isDebug === '' ? '' : (isDebug === 'true' || isDebug === '1') ? true : false;
+        var isOpened = getUrlParameter('o');
+        isOpened = isOpened === '' ? '' : (isOpened === 'true' || isOpened === '1') ? true : false;
         return {
             auto: isAutoOpen,
-            debug: isDebug
+            debug: isDebug,
+            isOpened: isOpened
         };
     };
 
@@ -109,6 +112,7 @@ function feOpenWeb(schema, intentData, deepLink, downloadUrl, appFlag, callback)
         var queryConfig = _parseUrlQueryConfig();
         this.config.autoOpen = queryConfig.auto && typeof queryConfig.auto === 'boolean' ? queryConfig.auto : config.autoOpen;
         this.config.debug = queryConfig.debug && typeof queryConfig.debug === 'boolean' ? queryConfig.debug : false;
+        this.config.isOpened = queryConfig.isOpened && typeof queryConfig.isOpened === 'boolean' ? queryConfig.isOpened : false;
         this.config.isApp = _isAPP();
         /*arguments.callee.prototype.constructor.prototype.area(); //子类里调用父方法area
         arguments.callee.prototype.area();//子类里调用重载方法area*/

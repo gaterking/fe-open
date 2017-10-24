@@ -1,5 +1,6 @@
 var env = require('./env');
 var wakeupMethods = require('./wakeupMethods');
+var updateUrlParameter = require('./util').updateUrlParameter;
 /**
  * 检查iframe方式是否成功唤醒
  * 
@@ -151,13 +152,24 @@ function feOpen(config, ua) {
 
         if (method === 'u') {
             this._debugLog('universal url');
-            this._openByLocation(openLinks.universalUrl);
+            if (this.config.isOpened) {
+                // 如果已经手动点击打开过一次
+                // 自动打开过，本身页面就是universal link
+                this.download();
+            }else{
+                this.config.isOpened = true;
+                // this._openByLocation(updateUrlParameter(openLinks.universalUrl, 'o', 1));
+            }
             isWakeUpIng = true;
         }
-
         if (method === 'a') {
             this._debugLog('app link');
-            this._openByLocation(openLinks.appLink);
+            if (this.config.isOpened) {
+                this.download();
+            }else{
+                this.config.isOpened = true;
+                // this._openByLocation(updateUrlParameter(openLinks.appLink, 'o', 1));
+            }
             isWakeUpIng = true;
         }
 
@@ -206,6 +218,7 @@ function feOpen(config, ua) {
 feOpen.prototype.config = {
     isApp: false,
     autoOpen: false, //是否自动打开
+    isOpened: false, // 是否已经打开过一次，兼容universal link
     schema: '',
     universalUrl: '', //IOS Universal url
     appLink: '', //Android APP Link
@@ -261,8 +274,8 @@ feOpen.prototype.openAuto = function(urls) {
         this.config.callback.onStart();
     }
     this._wakeupApp({
-        universalUrl: '',
-        appLink: '',
+        universalUrl: urls && urls.universalUrl || this.config.universalUrl,
+        appLink: urls && urls.appLink || this.config.appLink ,
         intent: urls && urls.intent || this.config.intentWithoutFallback,
         schema: urls && urls.schema || this.config.schema
     },true, {

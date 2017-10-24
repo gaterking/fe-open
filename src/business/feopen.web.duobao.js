@@ -5,7 +5,7 @@ function feOpenDuobao(openOption) {
     var defaultOption = Object.assign({
         protocal: 'duobaohkg',
         schema: '',
-        deepLink: ['https://twitter.com'],
+        deepLink: ['https://oia.zhihu.com'],
         downloadUrl: 'https://app.henkuaigou.com/applinks/download.htm',
         fallbackUrl: 'https://twitter.com',
         appFlag: 'duobaohkg',
