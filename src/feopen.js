@@ -102,7 +102,7 @@ function feOpen(config, ua) {
     this.download = function(url) {
         if (this._currentEnv.isWeChat || this._currentEnv.isWeibo) {
             if (this.config.callback.onNotSupport && typeof this.config.callback.onNotSupport === 'function') {
-                this.config.callback.onNotSupport('download',this._currentEnv.browser);
+                this.config.callback.onNotSupport('download', this._currentEnv.browser);
             }
             return false;
         }
@@ -133,8 +133,10 @@ function feOpen(config, ua) {
         }
     };
 
-    this._wakeupApp = function(openLinks,isAutoOpen, cb) {
-        if (this._currentEnv.isWeChat || this._currentEnv.isWeibo) {
+    this._wakeupApp = function(openLinks, isAutoOpen, cb) {
+        var method = wakeupMethods.getMethod(this._currentEnv, openLinks.universalUrl !== '', openLinks.appLink !== '', openLinks.intent, isAutoOpen);
+
+        if ((this._currentEnv.isWeChat || this._currentEnv.isWeibo)) {
             //微信端，不进行open，直接回调
             this._debugLog('WeChat');
             if (cb && cb.onNotSupport && typeof cb.onNotSupport === 'function') {
@@ -142,22 +144,21 @@ function feOpen(config, ua) {
                 return false;
             }
             if (this.config.callback.onNotSupport && typeof this.config.callback.onNotSupport === 'function') {
-                this.config.callback.onNotSupport('wakeup',this._currentEnv.browser);
+                this.config.callback.onNotSupport('wakeup', this._currentEnv.browser);
                 return false;
             }
             return false;
         }
         var isWakeUpIng = false;
-        var method = wakeupMethods.getMethod(this._currentEnv, openLinks.universalUrl !== '', openLinks.appLink !== '', openLinks.intent,isAutoOpen);
-
         if (method === 'u') {
             this._debugLog('universal url');
             if (this.config.isOpened) {
                 // 如果已经手动点击打开过一次
                 // 自动打开过，本身页面就是universal link
                 this.download();
-            }else{
+            } else {
                 this.config.isOpened = true;
+                // 不允许同域使用universal link
                 // this._openByLocation(updateUrlParameter(openLinks.universalUrl, 'o', 1));
             }
             isWakeUpIng = true;
@@ -166,7 +167,7 @@ function feOpen(config, ua) {
             this._debugLog('app link');
             if (this.config.isOpened) {
                 this.download();
-            }else{
+            } else {
                 this.config.isOpened = true;
                 // this._openByLocation(updateUrlParameter(openLinks.appLink, 'o', 1));
             }
@@ -261,7 +262,7 @@ feOpen.prototype.open = function(urls) {
         appLink: appLink,
         intent: intent,
         schema: schema
-    },false);
+    }, false);
 };
 
 /**
@@ -274,14 +275,15 @@ feOpen.prototype.openAuto = function(urls) {
         this.config.callback.onStart();
     }
     this._wakeupApp({
-        universalUrl: urls && urls.universalUrl || this.config.universalUrl,
-        appLink: urls && urls.appLink || this.config.appLink ,
-        intent: urls && urls.intent || this.config.intentWithoutFallback,
-        schema: urls && urls.schema || this.config.schema
-    },true, {
-        onFail: function(){},
-        onNotSupport:function(action){}
-    });
+            universalUrl: urls && urls.universalUrl || this.config.universalUrl,
+            appLink: urls && urls.appLink || this.config.appLink,
+            intent: urls && urls.intent || this.config.intentWithoutFallback,
+            schema: urls && urls.schema || this.config.schema
+        },
+        true, {
+            onFail: function() {},
+            onNotSupport: function(action) {}
+        });
 };
 
 /**

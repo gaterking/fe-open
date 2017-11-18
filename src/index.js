@@ -55,6 +55,7 @@ function feOpenWeb(schema, intentData, deepLink, downloadUrl, appFlag, callback)
     };
 
     feOpen.call(this, config);
+    
     this.config.tlink = urls.tlink; //同步地址，直接使用schema方式打开;
 
     function _parseUrlQueryConfig() {
@@ -95,7 +96,7 @@ function feOpenWeb(schema, intentData, deepLink, downloadUrl, appFlag, callback)
      */
     function _initElementsEvent() {
         var _this = this;
-        window.addEventListener('click', function(e) {
+        document.body.addEventListener('click', function(e) {
             var targetElement = e.target;
             if (targetElement.classList.contains('feopen')) {
                 _this.open();

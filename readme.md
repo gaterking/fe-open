@@ -16,7 +16,7 @@ intent
 schema
 
 手动唤醒：点击按钮触发时间唤醒，唤醒失败后跳转到下载页面，如果是WeChat、Weibo，弹出提示框
-universal link/deep link
+universal link/deep link （IOS9支持手动点击使用universal唤醒，但不允许进入时自动唤醒）
 intent
 schema
 
