@@ -173,7 +173,6 @@ function feOpen(config, ua) {
             }
             isWakeUpIng = true;
         }
-
         if (method === 'i') {
             this._debugLog('intent');
             this._openByLocation(openLinks.intent);

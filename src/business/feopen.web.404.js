@@ -15,7 +15,8 @@ function feOpen404(openOption, isAlpha) {
         downloadUrl: 'https://m.iwincaipiao.com/client?from=testfrom&template=1',
         fallbackUrl: 'https://a.iwincaipiao.com/h1',
         appFlag: 'ycp',
-        autoOpen:null
+        autoOpen:null,
+        tlink: ''
     }, openOption);
     defaultOption.onNotSupport = function(action, browser) {
         var wakeupTmplDom = document.getElementById('feopen-tmpl-wakeup');
@@ -45,13 +46,14 @@ function feOpen404(openOption, isAlpha) {
     function _init() {
         openWeb = feOpenWeb.init({
                 protocal: defaultOption.protocal + '://',
-                value: defaultOption.schema
+                value: defaultOption.schema,
+                tlink: defaultOption.tlink
             }, {
                 //intent://tkrkj/#Intent;scheme=oldbirdlottery://login;package=com.iwincaipiao;S.browser_fallback_url=https%3A%2F%2Fbaidu.com;end
-                //intent://tkrkj/#Intent;scheme=oldbirdlottery%3A%2F%2Flogin;package=com.iwincaipiao;S.browser_fallback_url=https%3A%2F%2Fwww.baidu.com;end"
-                host: 'tkrkj',
+                //intent://category?lotteryId=1#Intent;scheme=oldbirdlottery;package=com.iwincaipiao.debug;S.browser_fallback_url=https%3A%2F%2Fa.iwincaipiao.com%2Fh1;end
+                host: '',
                 package: 'com.iwincaipiao' + (isAlpha ? '.alpha' : ''),
-                schema: 'oldbirdlottery://' + defaultOption.schema,
+                schema: 'oldbirdlottery',
                 fallbackUrl: defaultOption.fallbackUrl ||
                     (Array.isArray(defaultOption.donwloadUrl) ? (defaultOption.donwloadUrl[2] || defaultOption.donwloadUrl[1]) : defaultOption.donwloadUrl)
             },

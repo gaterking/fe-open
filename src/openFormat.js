@@ -41,19 +41,18 @@ function _openFormat(schema, downloadUrl, intentData, deepLink) {
     deepLink = deepLink ? deepLink : '';
     var schemaValue = schema.value || getUrlParameter('schema');
     var urls = {
-        tlink: '',
         schema: '',
         universalUrl: '',
         appLink: '',
         intent: '',
         downloadUrl: ''
     };
-    urls.tlink = (typeof feopenConfig !== 'undefined' && feopenConfig.tlink) ? feopenConfig.tlink : ''; //页面同步变量，直接读取window.feopenConfig.tlink属性
-    urls.schema = schema.protocal + encodeURIComponent(schemaValue);
+    let configTlink = (typeof feopenConfig !== 'undefined' && feopenConfig.tlink) ? feopenConfig.tlink : ''; //页面同步变量，直接读取window.feopenConfig.tlink属性
+    urls.schema = configTlink || schema.tlink || schema.protocal + encodeURIComponent(schemaValue);
     var intents = [];
     if (intentData) {
-        intents.push('intent://' + (intentData.host ? intentData.host : null) + '/#Intent');
-        intentData.schema || schemaValue ? intents.push('scheme=' + (intentData.schema ? intentData.schema : schemaValue)) : null;
+        intents.push('intent://' + (intentData.host ? intentData.host : urls.schema.replace(intentData.schema+'://', '')) + '#Intent');
+        intentData.schema ? intents.push('scheme=' + intentData.schema) : null;
         intentData.package ? intents.push('package=' + intentData.package) : null;
         intentData.action ? intents.push('action=' + intentData.action) : null;
         intentData.category ? intents.push('category=' + intentData.category) : null;

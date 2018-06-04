@@ -55,8 +55,6 @@ function feOpenWeb(schema, intentData, deepLink, downloadUrl, appFlag, callback)
     };
 
     feOpen.call(this, config);
-    
-    this.config.tlink = urls.tlink; //同步地址，直接使用schema方式打开;
 
     function _parseUrlQueryConfig() {
         //解析url query，生成配置
@@ -123,22 +121,9 @@ function feOpenWeb(schema, intentData, deepLink, downloadUrl, appFlag, callback)
 }
 feOpenWeb.prototype = Object.create(feOpen.prototype);
 feOpenWeb.prototype.open = function(urls) {
-    if (!urls && this.config.tlink) {
-        //指定了tlink，优先使用tlink打开
-        urls = {
-            schema: this.config.tlink
-        };
-    }
     feOpen.prototype.open.apply(this, [urls]);
 };
 feOpenWeb.prototype.openAuto = function() {
-    var urls = {};
-    if (this.config.tlink) {
-        //指定了tlink，优先使用tlink打开
-        urls = {
-            schema: this.config.tlink
-        };
-    }
     feOpen.prototype.openAuto.apply(this, [urls]);
 };
 feOpenWeb.prototype.constructor = feOpenWeb;

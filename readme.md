@@ -109,3 +109,9 @@ android + chrome: schema/intent 都能够手动唤醒：
 1.设置url href,手动点击后唤醒 
 
 2.javascript设置location唤醒，但需要从别的url跳转进来才能触发生效
+
+universal link
+微信：除非白名单，否则全屏蔽
+微博：直接输入link无效，从中转页面往universal link页跳转，可以唤醒
+UC、百度：扫码、直接输入link无效，从中转页面往universal link页跳转，可以唤醒
+safari：摄像头扫码跳转有效，其它同UC

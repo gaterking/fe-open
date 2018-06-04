@@ -17,10 +17,10 @@
         </div>
         <script>
             var feopenConfig={
-                // tlink:'tlink1'
+                tlink:'oldbirdlottery://category?lotteryId=1'
             };
             if(feopen_web){
-                feopen_web.init({}, false);
+                feopen_web.init(feopenConfig, false);
             }
             
             document.getElementById('schema').onclick = function click() {
