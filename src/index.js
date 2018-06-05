@@ -123,7 +123,7 @@ feOpenWeb.prototype = Object.create(feOpen.prototype);
 feOpenWeb.prototype.open = function(urls) {
     feOpen.prototype.open.apply(this, [urls]);
 };
-feOpenWeb.prototype.openAuto = function() {
+feOpenWeb.prototype.openAuto = function(urls) {
     feOpen.prototype.openAuto.apply(this, [urls]);
 };
 feOpenWeb.prototype.constructor = feOpenWeb;

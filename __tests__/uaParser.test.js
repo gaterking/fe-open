@@ -153,7 +153,8 @@ test('ua EUI browser',()=>{
 test('ua OPPO browser',()=>{
     //OPPO系统浏览器
     var ua = [
-        ["Mozilla/5.0 (Linux; U; Android 6.0.1; zh-cn; OPPO A57 Build/MMB29M) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.134 Mobile Safari/537.36 OppoBrowser/4.3.8.2",4,"4.3.8.2"]
+        ["Mozilla/5.0 (Linux; U; Android 6.0.1; zh-cn; OPPO A57 Build/MMB29M) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.134 Mobile Safari/537.36 OppoBrowser/4.3.8.2",4,"4.3.8.2"],
+        ["Mozilla/5.0 (Linux; U; Android 7.1.1; zh-cn; OPPO A79k Build/N6F26Q) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.134 Mobile Safari/537.36 OppoBrowser/4.6.3", 4, "4.6.3"]
     ];
     let uap;
     ua.forEach(u=>{

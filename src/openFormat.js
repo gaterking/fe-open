@@ -47,7 +47,7 @@ function _openFormat(schema, downloadUrl, intentData, deepLink) {
         intent: '',
         downloadUrl: ''
     };
-    let configTlink = (typeof feopenConfig !== 'undefined' && feopenConfig.tlink) ? feopenConfig.tlink : ''; //页面同步变量，直接读取window.feopenConfig.tlink属性
+    var configTlink = (typeof feopenConfig !== 'undefined' && feopenConfig.tlink) ? feopenConfig.tlink : ''; //页面同步变量，直接读取window.feopenConfig.tlink属性
     urls.schema = configTlink || schema.tlink || schema.protocal + encodeURIComponent(schemaValue);
     var intents = [];
     if (intentData) {
