@@ -7,6 +7,9 @@ var webpackBaseConfig = {
         "feopen_web.duobao": "./src/business/feopen.web.duobao",
         "feopen_web.404": "./src/business/feopen.web.404"
     },
+    resolve: {
+        extensions: [ '.tsx', '.ts', '.js' ]
+    },
     output: {
         path: path.resolve(__dirname, "../dist"),
         publicPath: '/' + version + '/',
@@ -16,6 +19,10 @@ var webpackBaseConfig = {
     },
     module: {
         rules: [{
+            test: /\.tsx?$/,
+            use: 'ts-loader',
+            exclude: /node_modules/
+          }, {
             test: /\.(jpe?g|png|gif|svg)$/i,
             use: [
                 'url-loader?limit=100000',
